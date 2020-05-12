@@ -27,9 +27,27 @@ class SlackBot
   end
 
   def naive_respond(params, options = {})
-    return nil if params[:user_name] == "slackbot" || params[:user_id] == "USLACKBOT"
+    return nil if params[:user_name] == "nakagawa_inbot" || params[:user_id] == "USlackBot"
 
     user_name = params[:user_name] ? "@#{params[:user_name]}" : ""
     return {text: "#{user_name} Hi!"}.merge(options).to_json
   end
+
+  def rand_name
+    url = URI.parse("https://randomuser.me/api/")
+    https = Net::HTTP.new(url.host, url.port)
+    # httpsで通信する場合、use_sslをtrueにする
+    https.use_ssl = true
+    # 3.リクエストを作成する
+    req = Net::HTTP::Get.new(url.path)
+    # 4.リクエストを投げる/レスポンスを受け取る
+    res = https.request(req)
+    # 5.データを変換する
+    hash = JSON.parse(res.body)
+
+    name = hash["results"][0]["name"]["last"] + ' ' +  hash["results"][0]["name"]["first"]
+
+    return name
+  end
+  
 end

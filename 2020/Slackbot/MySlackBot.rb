@@ -17,5 +17,14 @@ end
 
 post '/slack' do
   content_type :json
-  slackbot.naive_respond(params, username: "Bot")
+  send_text = params[:text].split(/「|」/)
+
+  if send_text[2] == "と言って" then
+    slackbot.post_message(send_text[1],username: "nakagawa_inbot")
+  elsif send_text[1] == "rand_name" then
+    r_name = slackbot.rand_name
+    slackbot.post_message(r_name,username: "nakagawa_inbot")
+  else
+    slackbot.naive_respond(params,username: "nakagawa_inbot")
+  end
 end
