@@ -1,0 +1,82 @@
+\documentclass[12pt]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\textheight = 25truecm
+\textwidth = 18truecm
+\topmargin = -1.5truecm
+\oddsidemargin = -1truecm
+\evensidemargin = -1truecm
+\marginparwidth = -1truecm
+
+\def\theenumii{\Alph{enumii}}
+\def\theenumiii{\alph{enumiii}}
+\def\labelenumi{(\theenumi)}
+\def\labelenumiii{(\theenumiii)}
+\def\theenumiv{\roman{enumiv}}
+\def\labelenumiv{(\theenumiv)}
+\usepackage{comment}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% sty/ にある研究室独自のスタイルファイル
+%%\usepackage{jtygm}  % フォントに関する余計な警告を消す
+%%\sepackage{nutils} % insertfigure, figref, tabref マクロ
+
+\def\figdir{./figs} % 図のディレクトリ
+\def\figext{pdf}    % 図のファイルの拡張子
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 表題
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+{\LARGE SlackBotプログラム作成の報告書}
+\end{center}
+
+\begin{flushright}
+  2020/5/27\\
+  中川 雄介
+\end{flushright}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 概要
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{概要}\label{sec1}
+\label{sec:introduction}
+本資料は2020年度B4新人研修課題の1つであるSlackBotプログラム作成の報告書である．Slackとは，Web上で利用できるビジネス向けのチャットツールである．SlackBotとは，Slack上でのユーザの特定の発言を契機にSlackに発言するプログラムである．本資料では，課題内容，理解できなかった部分，自主的に作成した機能，および作成できなかった機能について述べる．なお，本資料における発言とはSlackの特定のチャンネルに文字列を投稿することを指す．また，本資料においての発言内容は`` ''で囲って表す．
+
+\section{課題内容}\label{sec2}
+課題として，SlackBotプログラムをRubyで作成する．具体的には以下の2つを行う．
+\begin{enumerate}
+\item 任意の文字列を発言するプログラムの作成\\
+  Slackでユーザが``「◯◯」と言って''の文字列を含む発言した場合に，SlackBotが``◯◯''と発言するプログラムを作成する．\label{item1}
+\item SlackBotプログラムへの機能追加\\
+  Slack以外のWebサービスのAPIやWebhookを利用した機能を追加する．\label{item2}
+\end{enumerate}
+本課題で使用するRubyのバージョンは2.6.6である．また，作成したSlackBotプログラムのコード量は83行になった．
+
+\section{理解できなかった部分}\label{sec3}
+理解できなかった部分を以下に示す．
+\begin{enumerate}
+  \item \verb|password|メソッドに記述されている以下のコード
+\begin{verbatim}
+    url = URI.parse("https://randomuser.me/api/")
+    https = Net::HTTP.new(url.host, url.port)
+    https.use_ssl = true
+    req = Net::HTTP::Get.new(url.path)
+    res = https.request(req)
+    hash = JSON.parse(res.body)
+\end{verbatim}
+このコードは，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換しているのだが，具体的に各関数でどのような処理が行われているかを完全には理解できていない．
+\end{enumerate}
+   
+\section{自主的に作成した機能}\label{sec4}
+今回自主的に作成した機能は存在しない．
+
+\section{作成できなかった機能}\label{sec5}
+\begin{enumerate}
+\item 各種コマンドの実装\\
+  \ref{sec2}章(\ref{item2})で実装した機能はパスワードしか返さないようになっているが，APIの機能としては他にも名前や生年月日等の情報を受け取っている．そのためコマンドによって発言する情報を変える機能を実装したかった．
+\end{enumerate}
+\bibliographystyle{ipsjunsrt}
+\bibliography{mybibdata}
+
+\end{document}

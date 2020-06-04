@@ -1,0 +1,230 @@
+\documentclass[12pt]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\textheight = 25truecm
+\textwidth = 18truecm
+\topmargin = -1.5truecm
+\oddsidemargin = -1truecm
+\evensidemargin = -1truecm
+\marginparwidth = -1truecm
+
+\def\theenumii{\Alph{enumii}}
+\def\theenumiii{\alph{enumiii}}
+\def\labelenumi{(\theenumi)}
+\def\labelenumiii{(\theenumiii)}
+\def\theenumiv{\roman{enumiv}}
+\def\labelenumiv{(\theenumiv)}
+\usepackage{comment}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% sty/ にある研究室独自のスタイルファイル
+%%\usepackage{jtygm}  % フォントに関する余計な警告を消す
+%%\usepackage{nutils} % insertfigure, figref, tabref マクロ
+
+\def\figdir{./figs} % 図のディレクトリ
+\def\figext{pdf}    % 図のファイルの拡張子
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 表題
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+{\LARGE SlackBotプログラムの仕様書}
+\end{center}
+
+\begin{flushright}
+  2020/5/27\\
+  中川 雄介
+\end{flushright}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 概要
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{概要}
+\label{sec:introduction}
+本資料は2020年度B4新人研修課題で作成したSlackBotプログラムの仕様についてまとめたものである．本プログラムで使用するSlackとはWeb上で利用できるビジネス向けのチャットツールである．SlcakBotとは，Slack上でのユーザの特定の発言を契機にSlackに発言するプログラムである．本プログラムは，以下の2つの機能をもつ．
+\begin{enumerate}
+\item 任意の文字列を発言する機能
+\item ランダムに生成された文字列を発言する機能
+\end{enumerate}
+なお，本資料における発言とはSlackの特定のチャンネルに文字列を投稿することを指す．また，本資料においての発言内容は`` ''で囲って表す．
+
+
+\section{対象とする利用者}\label{sec:user}
+本プログラムは以下のアカウントを所有する利用者を想定している．
+\begin{enumerate}
+\item Slackアカウント
+\item GitHubアカウント 
+\end{enumerate}
+GitHubとはソフトウェア開発のプラットフォームである．GitHubにソースコードをホスティングすることで複数人のソフトウエア開発者と協働してコードをレビューしたり、プロジェクトを管理しつつ開発を行ったりすることができる．
+
+\section{機能}\label{sec:function}
+本プログラムはSlackでの``@nakagawabot''から始まるユーザの発言を受信し，これに対してSlackBotが発言する．SlackBotが発言する内容は``@nakagawabot''に続く文字列により決定される．以下で本プログラムがもつ2つの機能について述べる．
+\begin{description}
+\item[機能1] 任意の文字列を発言する機能\\
+  この機能は，ユーザの``@nakagawabot 「(任意の文字列)」と言って''という発言に対して，SlackBotが(任意の文字列)と発言する．例えば，``@nakagawabot 「こんにちは」と言って''とユーザが発言した場合，Slackbotは``こんにちは''と発言する．\label{func1}
+\item[機能2] ランダムに生成された文字列を発言する機能\\
+  ユーザが``@nakagawabot 「password」''と発言した場合，SlackBotはランダムに生成された文字列を発言する．例えば，``@nakagawabot 「password」''という発言に対し，SlackBotは"knockers"のように発言する．
+\end{description}
+なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザー名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
+
+\section{動作環境}\label{sec:env}
+本プログラムの動作環境を表\ref{tab:2}に示す．なお，本プログラムが表\ref{tab:2}の動作環境で動作することは確認済みである．
+\begin{table}[h]
+  \begin{center}
+    \caption{動作環境}\label{tab:2}
+  %%  \ecaption{Operating environment.}
+    \begin{tabular}{l|l}
+      \hline\hline
+      \multicolumn{1}{l|}{項目} & \multicolumn{1}{l}{内容}\\
+      \hline
+      OS & Windows 10 \\
+      CPU & Intel(R) Core(TM) CPU m3-6Y30 @ 0.90GHz 1.51GHz\\
+      メモリ & 4.00GB\\
+      Ruby & ruby 2.6.6p146\\
+      Ruby Gem & bundler 3.0.3\\
+      & mustermann 1.0.2\\
+      & rack 2.0.4\\
+      & rack-protection 2.0.1\\
+      & sinatra 2.0.1\\
+      & tilt 2.0.8\\
+      heroku & 7.40.0 win32-x64\\
+      & node v12.16.2\\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\section{環境構築}
+\subsection{概要}
+本プログラムの動作のために必要な環境構築の項目を以下に示す．
+\begin{enumerate}
+\item SlackのIncoming WebHookの設定
+\item SlackのOutgoing WebHookの設定
+\item APIのアドレス取得
+\item Herokuの設定
+\end{enumerate}
+Incoming WebHookとは，外部サービスからSlackに発言する機能である．Outgoing WebHookとは，特定の発言を受信した際，指定したURLに発言内容やユーザネームを含むデータをPOSTする機能である．本プログラムでは，この2つのWebHook機能を利用するため設定を行う必要がある．WebHook機能とAPIを利用したSlackBotの処理の流れを以下で説明する．
+
+\begin{enumerate}
+\item クライアントがSlackに発言する．
+\item SlackがOutgoing WebHookを利用し，発言をSlackBotサーバにPOSTする．
+\item SlackBotサーバがAPIを用いてWebサービスにリクエストを送信する．
+\item WebサービスがAPIに応じた処理結果をレスポンスとしてSlackBotサーバに返却する．
+\item SlackBotサーバが受け取ったレスポンスを元に，Slackに発言する文字列を生成する．
+\item SlackBotサーバがIncoming WebHookを利用し，Slackに発言する．
+\item SlackがSlackBotサーバの発言を表示することで，クライアントは発言を確認できる．
+\end{enumerate}
+
+\begin{figure}
+ \centering
+ \includegraphics[keepaspectratio, scale=0.5]
+      {slackbot-grf}
+ \caption{WebHookとAPIを利用したSlackBotの処理の流れ}
+\end{figure}
+%%\insertfigure[0.8]{slackbot}{slackbot}{WebHookとAPIを利用したSlackBotの処理の流れ}{slackbot}
+
+\subsection{手順}
+\subsubsection{SlackのIncoming WebHookの設定}\label{sec:IW}
+\begin{enumerate}
+\item 以下のURLにアクセスする．
+\begin{verbatim}
+https://<work_space>.slack.com/apps/manage/custom-integrations
+\end{verbatim}
+ただし，\verb|<work_space>|は自分のワークスペース名を示す．ワークスペースとは，他のメンバーとコミュニケーションをとり業務を行うための共有スペースである．
+\item 「Incoming WebHook」をクリックする．
+\item 「設定の追加」から，新たなIncoming WebHookを追加する．
+\item 「チャンネルへの投稿」で送信するチャンネルを選択する，
+\item 「Webhook URL」に表示されているURLを，\ref{sec5-2-4}項(\ref{item8})で使うためひかえておく．\label{url}
+\item 「設定を保存する」をクリックする．
+\end{enumerate}
+
+\subsubsection{SlackのOutgoing WebHookの設定}
+\begin{enumerate}
+\item 以下のURLにアクセスする．
+\begin{verbatim}
+https://<work_space>.slack.com/apps/manage/custom-integrations
+\end{verbatim}
+ただし，\verb|<work_space>|は自分のワークスペース名を示す．
+\item 「Outgoing WebHook」をクリックする．
+\item 「設定を追加」をクリックし，「Outgoing Webhook インテグレーションの追加」をクリックする．
+\item Outgoing WebHookに関して以下を設定する．
+  \begin{enumerate}
+  \item チャンネル：発言を監視するチャンネル
+  \item 引き金となる言葉：WebHookが動作する契機となる文字列
+  \item URL：WebHookが動作した際にPOSTを行うURL
+  \end{enumerate}
+\item 「設定を保存する」をクリックする．
+\end{enumerate}
+
+
+\subsubsection{ランダムなユーザー生成APIのURLの取得}\label{sec:api}
+Random User Generatorという名前のAPIのURLを取得する．
+\begin{enumerate}
+\item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムなユーザー情報を受け取ることができる．
+\begin{verbatim}
+https://randomuser.me/api/
+\end{verbatim}
+\end{enumerate}
+
+\subsubsection{Herokuの設定}\label{sec5-2-4}
+Heroku はアプリの構築、提供、監視、スケールに役立つクラウドプラットフォームである．
+\begin{enumerate}
+\item 以下のURLよりHerokuにアクセスし，「Sign up」から新しいアカウントを登録する．
+  https://www.heroku.com/
+\item 登録したアカウントでログインし，「Getting Started with Heroku」の使用する言語として「Ruby」を選択する．
+\item ターミナルで以下のコマンドを実行し，Heroku CLIをインストールする．
+\begin{verbatim}
+$ curl https://cli-assets.heroku.com/install.sh | sh 
+\end{verbatim} 
+\item 以下のコマンドを実行し，Heroku CLIがインストールされたことを確認する．
+\begin{verbatim}
+$ heroku version
+\end{verbatim}
+\item 以下のコマンドを実行し，Herokuにログインする．
+\begin{verbatim}
+$ heroku login
+\end{verbatim}
+\item 作成したアプリケーションのディレクトリに移動して以下のコマンドを実行し，Heroku上にアプリケーションを生成する．
+\begin{verbatim}
+$ heroku create <app_name>
+\end{verbatim}
+ただし，\verb|<app_name>|は任意のアプリケーション名を示す．アプリケーション名には英語のアルファベットの小文字，数字，およびハイフンのみ使用できる．
+\item 以下のコマンドで生成したアプリケーションがHerokuに登録されていることを確認できる．
+\begin{verbatim}
+$ git remote -v
+heroku https://git.heroku.com/<myapp_name>.git (fetch)
+heroku https://git.heroku.com/<myapp_name>.git (push)
+\end{verbatim}
+\item 以下のコマンドを実行し，Herokuの環境変数に\ref{sec:IW}項(\ref{url})で取得したWebhook URLを設定する．\label{item8}
+\begin{verbatim}
+$ heroku config:set INCOMING_WEBHOOK_URL="https://*****"
+\end{verbatim}
+\end{enumerate}
+
+\section{使用方法}
+\begin{enumerate}
+\item 下記のGitリポジトリから本プログラムを取得する．
+\begin{verbatim}
+git@github.com:nakagawa1210/BootCamp.git
+  \end{verbatim}
+  \item 取得した本プログラムはHerokuにデプロイすることで使用できる．デプロイは以下のコマンドを実行する．
+\begin{verbatim}
+$ git push heroku master
+\end{verbatim}
+\end{enumerate}
+
+\section{エラー処理と保証しない動作}
+\subsection{エラー処理}
+本プログラムでは特にエラー処理は行っていない．
+
+\subsection{保証しない動作}
+本プログラムが保証しない動作を以下に示す．
+\begin{enumerate}
+\item SlackのOutgoing WebHook以外からのPOSTリクエストを受け取った際の動作
+%%\item \tabref{tab:2}に示す動作環境以外でプログラムを実行した時の動作
+\end{enumerate}
+
+\bibliographystyle{ipsjunsrt}
+\bibliography{mybibdata}
+
+\end{document}

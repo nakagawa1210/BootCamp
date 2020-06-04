@@ -1,0 +1,151 @@
+\documentclass[12pt]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\textheight = 25truecm
+\textwidth = 18truecm
+\topmargin = -1.5truecm
+\oddsidemargin = -1truecm
+\evensidemargin = -1truecm
+\marginparwidth = -1truecm
+
+\def\theenumii{\Alph{enumii}}
+\def\theenumiii{\alph{enumiii}}
+\def\labelenumi{(\theenumi)}
+\def\labelenumiii{(\theenumiii)}
+\def\theenumiv{\roman{enumiv}}
+\def\labelenumiv{(\theenumiv)}
+\usepackage{comment}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% sty/ にある研究室独自のスタイルファイル
+%%\usepackage{jtygm}  % フォントに関する余計な警告を消す
+%%\usepackage{nutils} % insertfigure, figref, tabref マクロ
+
+\def\figdir{./figs} % 図のディレクトリ
+\def\figext{pdf}    % 図のファイルの拡張子
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 表題
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+{\LARGE Linux カーネルへのシステムコール追加の手順書}
+\end{center}
+
+\begin{flushright}
+  2020/6/3\\
+  中川 雄介
+\end{flushright}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 概要
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{はじめに}\label{sec:hajime}
+\label{sec:introduction}
+本手順書では，Linux カーネルへシステムコールを追加する方法を記す．カーネルへシステムコールを追加するには，Linux のソースコードを取得してシステムコールのソースコードを追加した後，カーネルの再構築を行う．また，本手順書で想定する読者はコンソールの基本的な操作を習得しているものとする．以下に本手順書の章立てを示す．
+
+\ref{sec:hajime}章　はじめに
+
+\ref{sec:env}章　実装環境
+
+\ref{sec:gaiyou}章　追加したシステムコールの概要
+
+\ref{sec:tejun}章　システムコール追加の手順
+
+\ref{sec:test}章　テスト
+
+\ref{sec:owari}章　おわりに
+
+\ref{sec:huroku}章　付録
+
+\section{実装環境}\label{sec:env}
+
+システムコールを追加した環境を表\ref{tab:1}に示す．導入済みパッケージのうちgit はlinux の取得に，gcc， make， bc， libncurses5-dev はカーネルの再構築に用いる．
+\begin{table}[h]
+  \begin{center}
+    \caption{実装環境}\label{tab:1}
+  %%  \ecaption{Operating environment.}
+    \begin{tabular}{l|l}
+      \hline\hline
+      \multicolumn{1}{l|}{項目} & \multicolumn{1}{l}{環境}\\
+      \hline
+      OS &  \\
+      カーネル & \\
+      CPU & \\
+      メモリ & \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\section{追加したシステムコールの概要}\label{sec:gaiyou}
+今回は，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加した．ソースコードは付録A に添付してある．
+
+システムコールの関数名は とした．システムコールの概要を以下に示す．
+
+【形式】　()
+
+【引数】　char * :任意の文字列
+
+【戻り値】なし
+
+【機能】カーネルのメッセージバッファに任意の文字列を出力する．
+
+\section{システムコール追加の手順}\label{sec:tejun}
+ \subsection{概要}
+システムコール追加手順の構成を以下に示す．
+\begin{enumerate}
+\item linux カーネルの取得
+  \begin{enumerate}
+  \item linux のソースコードの取得
+  \item ブランチの作成と切り替え
+  \end{enumerate}
+\item ソースコードの編集
+  \begin{enumerate}
+  \item システムコールの作成
+  \item Makefile の編集
+  \item システムコール番号の設定
+  \item システムコールのプロトタイプ宣言
+  \end{enumerate}
+\item カーネルの再構築
+  \begin{enumerate}
+  \item .config ファイルの作成
+  \item カーネルのコンパイル
+  \item カーネルのインストール
+  \item カーネルモジュールのコンパイル
+  \item カーネルモジュールのインストール
+  \item 初期RAM ディスクの作成
+  \item ブートローダーの設定
+  \item 再起動
+  \end{enumerate}
+\end{enumerate}
+以降では上記の手順について述べる．(1)については第\ref{sec:syutoku}節，(2)については第\ref{sec:hensyuu}節，(3)については第\ref{sec:saikoutiku}節で述べる．
+\subsection{Linux カーネルの取得}\label{sec:syutoku}
+
+\subsection{ソースコードの編集}\label{sec:hensyuu}
+
+\subsection{カーネルの再構築}\label{sec:saikoutiku}
+
+\section{テスト}\label{sec:test}
+ \subsection{概要}
+ 本手順書で追加したシステムコールが実装されているか確認するために，以下の手順で，実際に追加したシステムコール実行してテストする．
+\begin{enumerate}
+ \item テストプログラムの作成
+ \item テストプログラムの実行
+ \item システムコールの確認
+\end{enumerate}
+  \subsection{テストプログラムの作成}
+   \subsection{テストプログラムの実行}
+    \subsection{システムコールの確認}
+ 
+
+\section{おわりに}\label{sec:owari}
+本手順書では，カーネルへシステムコールを追加する手順を示した．また，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加し，機能が正しく動作しているか否かを確認するためのテスト方法について示した．
+
+\section{付録}\label{sec:huroku}
+ \subsection{システムコールのソースコード}
+  \subsection{テストプログラムのソースコード}
+
+\bibliographystyle{ipsjunsrt}
+\bibliography{mybibdata}
+
+\end{document}
