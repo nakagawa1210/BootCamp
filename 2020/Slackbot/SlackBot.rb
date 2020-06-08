@@ -33,7 +33,7 @@ class SlackBot
     return {text: "#{user_name} Hi!"}.merge(options).to_json
   end
 
-  def rand_name
+  def password
     url = URI.parse("https://randomuser.me/api/")
     https = Net::HTTP.new(url.host, url.port)
     # httpsで通信する場合、use_sslをtrueにする
@@ -45,9 +45,9 @@ class SlackBot
     # 5.データを変換する
     hash = JSON.parse(res.body)
 
-    name = hash["results"][0]["name"]["last"] + ' ' +  hash["results"][0]["name"]["first"]
+    pass = hash["results"][0]["login"]["password"] 
 
-    return name
+    return pass
   end
   
 end
