@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  9 JUN 2020 11:54
+This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  11 JUN 2020 14:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -105,21 +105,21 @@ LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
 (Font)              scaled to size 16.60605pt on input line 32.
 LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
-(Font)              scaled to size 9.60999pt on input line 63.
+(Font)              scaled to size 9.60999pt on input line 61.
 LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
-(Font)              scaled to size 9.60999pt on input line 63.
+(Font)              scaled to size 9.60999pt on input line 61.
 LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
-(Font)              scaled to size 8.64899pt on input line 74.
+(Font)              scaled to size 8.64899pt on input line 72.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 8.64899pt on input line 74.
+(Font)              scaled to size 8.64899pt on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 76.
+(Font)              <7> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 76.
+(Font)              <5> on input line 74.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 6.72699pt on input line 76.
+(Font)              scaled to size 6.72699pt on input line 74.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 4.805pt on input line 76.
+(Font)              scaled to size 4.805pt on input line 74.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -141,6 +141,6 @@ Here is how much of TeX's memory you used:
  4901 multiletter control sequences out of 15000+600000
  10470 words of font info for 48 fonts, out of 8000000 for 9000
  269 hyphenation exceptions out of 8191
- 25i,9n,28p,347b,400s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,9n,28p,347b,404s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on slackbot-specification.dvi (5 pages, 13440 bytes).
+Output written on slackbot-specification.dvi (5 pages, 13772 bytes).

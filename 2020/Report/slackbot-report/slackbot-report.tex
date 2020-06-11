@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% sty/ にある研究室独自のスタイルファイル
 \usepackage{jtygm}  % フォントに関する余計な警告を消す
-\sepackage{nutils} % insertfigure, figref, tabref マクロ
+%\sepackage{nutils} % insertfigure, figref, tabref マクロ
 
 \def\figdir{./figs} % 図のディレクトリ
 \def\figext{pdf}    % 図のファイルの拡張子
@@ -33,7 +33,7 @@
 \end{center}
 
 \begin{flushright}
-  2020/5/27\\
+  2020/6/24\\
   中川 雄介
 \end{flushright}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,6 +50,7 @@
   Slackでユーザが``「◯◯」と言って''の文字列を含む発言した場合に，SlackBotが``◯◯''と発言するプログラムを作成する．\label{item1}
 \item SlackBotプログラムへの機能追加\\
   Slack以外のWebサービスのAPIやWebhookを利用した機能を追加する．\label{item2}
+  今回追加した機能はSlackでユーザが''「password」''と発言した場合にSlackBotがランダムな単語を発言する機能である．
 \end{enumerate}
 本課題で使用するRubyのバージョンは2.6.6である．また，作成したSlackBotプログラムのコード量は83行になった．
 
@@ -58,14 +59,24 @@
 \begin{enumerate}
   \item \verb|password|メソッドに記述されている以下のコード
 \begin{verbatim}
-    url = URI.parse("https://randomuser.me/api/")
-    https = Net::HTTP.new(url.host, url.port)
-    https.use_ssl = true
-    req = Net::HTTP::Get.new(url.path)
-    res = https.request(req)
-    hash = JSON.parse(res.body)
+    36	  def password
+    37	    url = URI.parse("https://randomuser.me/api/")
+    38	    https = Net::HTTP.new(url.host, url.port)
+    39	    # httpsで通信する場合、use_sslをtrueにする
+    40	    https.use_ssl = true
+    41	    # 3.リクエストを作成する
+    42	    req = Net::HTTP::Get.new(url.path)
+    43	    # 4.リクエストを投げる/レスポンスを受け取る
+    44	    res = https.request(req)
+    45	    # 5.データを変換する
+    46	    hash = JSON.parse(res.body)
+    47	
+    48	    pass = hash["results"][0]["login"]["password"] 
+    49	
+    50	    return pass
+    51	  end
 \end{verbatim}
-このコードは，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換しているのだが，具体的に各関数でどのような処理が行われているかを完全には理解できていない．
+上記コードの37行目から46行目は，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換しているのだが，具体的に各関数でどのような処理が行われているかを完全には理解できていない．
 \end{enumerate}
    
 \section{自主的に作成した機能}\label{sec4}

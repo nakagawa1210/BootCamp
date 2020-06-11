@@ -33,7 +33,7 @@
 \end{center}
 
 \begin{flushright}
-  2020/6/18\\
+  2020/6/24\\
   中川 雄介
 \end{flushright}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,13 +49,11 @@
 なお，本資料における発言とはSlackの特定のチャンネルに文字列を投稿することを指す．また，本資料においての発言内容は`` ''で囲って表す．
 
 
-\section{対象とする利用者}\label{sec:user}
-本プログラムは以下のアカウントを所有する利用者を想定している．
+\section{対象とする開発者}\label{sec:user}
+本プログラムは以下のアカウントを所有する開発者を想定している．
 \begin{enumerate}
 \item Slackアカウント
-\item GitHubアカウント 
 \end{enumerate}
-GitHubとはソフトウェア開発のプラットフォームである．GitHubにソースコードをホスティングすることで複数人のソフトウエア開発者と協働してコードをレビューしたり、プロジェクトを管理しつつ開発を行ったりすることができる．
 
 \section{機能}\label{sec:function}
 本プログラムはSlackでの``@nakagawabot''から始まるユーザの発言を受信し，これに対してSlackBotが発言する．SlackBotが発言する内容は``@nakagawabot''に続く文字列により決定される．以下で本プログラムがもつ2つの機能について述べる．
@@ -120,13 +118,10 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 \subsection{手順}
 \subsubsection{SlackのIncoming WebHookの設定}\label{sec:IW}
 \begin{enumerate}
-\item 以下のURLにアクセスする．
-\begin{verbatim}
-https://<work_space>.slack.com/apps/manage/custom-integrations
-\end{verbatim}
-ただし，\verb|<work_space>|は自分のワークスペース名を示す．ワークスペースとは，他のメンバーとコミュニケーションをとり業務を行うための共有スペースである．
+\item 自分のSlackアカウントにログイン
+\item Slack画面左上の「namlab」->「その他管理項目」->「以下をカスタマイズ：nomlab」をクリック．左上の「Menu」から「App管理」->「カスタムインテグレーション」をクリックする．
 \item 「Incoming WebHook」をクリックする．
-\item 「設定の追加」から，新たなIncoming WebHookを追加する．
+\item 「Slackに追加」から，新たなIncoming WebHookを追加する．
 \item 「チャンネルへの投稿」で送信するチャンネルを選択する，
 \item 「Webhook URL」に表示されているURLを，\ref{sec5-2-4}項(\ref{item8})で使うためひかえておく．\label{url}
 \item 「設定を保存する」をクリックする．
@@ -134,13 +129,10 @@ https://<work_space>.slack.com/apps/manage/custom-integrations
 
 \subsubsection{SlackのOutgoing WebHookの設定}
 \begin{enumerate}
-\item 以下のURLにアクセスする．
-\begin{verbatim}
-https://<work_space>.slack.com/apps/manage/custom-integrations
-\end{verbatim}
-ただし，\verb|<work_space>|は自分のワークスペース名を示す．
+\item 自分のSlackアカウントにログイン
+\item Slack画面左上の「namlab」->「その他管理項目」->「以下をカスタマイズ：nomlab」をクリック．左上の「Menu」から「App管理」->「カスタムインテグレーション」をクリックする．
 \item 「Outgoing WebHook」をクリックする．
-\item 「設定を追加」をクリックし，「Outgoing Webhook インテグレーションの追加」をクリックする．
+\item 「Slackに追加」をクリックし，「Outgoing Webhook インテグレーションの追加」をクリックする．
 \item Outgoing WebHookに関して以下を設定する．
   \begin{enumerate}
   \item チャンネル：発言を監視するチャンネル
@@ -151,12 +143,16 @@ https://<work_space>.slack.com/apps/manage/custom-integrations
 \end{enumerate}
 
 
-\subsubsection{ランダムなユーザー情報を生成するAPIのURLの取得}\label{sec:api}
-Random User Generatorという名前のAPIのURLを取得する．
+\subsubsection{ランダムなユーザー情報を生成するAPIの動作の確認}\label{sec:api}
+Random User Generatorという名前のAPIのサイトがある．
 \begin{enumerate}
 \item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムなユーザー情報を受け取ることができる．
 \begin{verbatim}
 https://randomuser.me/api/
+\end{verbatim}
+\item 以下に示すURLのページをWebブラウザで開くとその際にランダムに生成されたユーザーの情報が表示される．
+\begin{verbatim}
+https://randomuser.me
 \end{verbatim}
 \end{enumerate}
 
@@ -165,12 +161,9 @@ Heroku はアプリの構築、提供、監視、スケールに役立つクラ�
 \begin{enumerate}
 \item 以下のURLよりHerokuにアクセスし，「Sign up」から新しいアカウントを登録する．
   https://www.heroku.com/
-\item 登録したアカウントでログインし，「Getting Started with Heroku」の使用する言語として「Ruby」を選択する．
-\item ターミナルで以下のコマンドを実行し，Heroku CLIをインストールする．
-\begin{verbatim}
-$ curl https://cli-assets.heroku.com/install.sh | sh 
-\end{verbatim} 
-\item 以下のコマンドを実行し，Heroku CLIがインストールされたことを確認する．
+\item 登録したアカウントでログインし，「Getting Started on Heroku」の使用する言語として「Ruby」を選択する．
+\item 「I'm ready to start」をクリックし，「Download the Heroku CLI for...」からOSを選択し， Heroku CLIをダウンロードする．
+\item ターミナルで以下のコマンドを実行し，Heroku CLIがインストールされたことを確認する．
 \begin{verbatim}
 $ heroku version
 \end{verbatim}
@@ -186,8 +179,8 @@ $ heroku create <app_name>
 \item 以下のコマンドで生成したアプリケーションがHerokuに登録されていることを確認できる．
 \begin{verbatim}
 $ git remote -v
-heroku https://git.heroku.com/<myapp_name>.git (fetch)
-heroku https://git.heroku.com/<myapp_name>.git (push)
+heroku https://git.heroku.com/<app_name>.git (fetch)
+heroku https://git.heroku.com/<app_name>.git (push)
 \end{verbatim}
 \item 以下のコマンドを実行し，Herokuの環境変数に\ref{sec:IW}項(\ref{url})で取得したWebhook URLを設定する．\label{item8}
 \begin{verbatim}
@@ -200,7 +193,7 @@ $ heroku config:set INCOMING_WEBHOOK_URL="https://*****"
 \item 下記のGitリポジトリから本プログラムを取得する．
 \begin{verbatim}
 git@github.com:nakagawa1210/BootCamp.git
-  \end{verbatim}
+\end{verbatim}
   \item 取得した本プログラムはHerokuにデプロイすることで使用できる．デプロイは以下のコマンドを実行する．
 \begin{verbatim}
 $ git push heroku master
@@ -209,7 +202,7 @@ $ git push heroku master
 
 \section{エラー処理と保証しない動作}
 \subsection{エラー処理}
-本プログラムでは特にエラー処理は行っていない．
+本プログラムでは特にエラー処理は行っていないので機能2で使用しているサイトが閉鎖していたり，障害でアクセスできなかったりするとプログラムが正常に動作せず，発言が返ってこない．
 
 \subsection{保証しない動作}
 本プログラムが保証しない動作を以下に示す．
