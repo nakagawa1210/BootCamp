@@ -13,13 +13,13 @@
 \def\labelenumiii{(\theenumiii)}
 \def\theenumiv{\roman{enumiv}}
 \def\labelenumiv{(\theenumiv)}
-\usepackage{comment}
+\usepackage{reportForm}
 \usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% sty/ にある研究室独自のスタイルファイル
-%%\usepackage{jtygm}  % フォントに関する余計な警告を消す
-%%\usepackage{nutils} % insertfigure, figref, tabref マクロ
+\usepackage{jtygm}  % フォントに関する余計な警告を消す
+\usepackage{nutils} % insertfigure, figref, tabref マクロ
 
 \def\figdir{./figs} % 図のディレクトリ
 \def\figext{pdf}    % 図のファイルの拡張子
@@ -33,7 +33,7 @@
 \end{center}
 
 \begin{flushright}
-  2020/5/27\\
+  2020/6/18\\
   中川 雄介
 \end{flushright}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +44,7 @@
 本資料は2020年度B4新人研修課題で作成したSlackBotプログラムの仕様についてまとめたものである．本プログラムで使用するSlackとはWeb上で利用できるビジネス向けのチャットツールである．SlcakBotとは，Slack上でのユーザの特定の発言を契機にSlackに発言するプログラムである．本プログラムは，以下の2つの機能をもつ．
 \begin{enumerate}
 \item 任意の文字列を発言する機能
-\item ランダムに生成された文字列を発言する機能
+\item ランダムな単語を発言する機能
 \end{enumerate}
 なお，本資料における発言とはSlackの特定のチャンネルに文字列を投稿することを指す．また，本資料においての発言内容は`` ''で囲って表す．
 
@@ -62,7 +62,7 @@ GitHubとはソフトウェア開発のプラットフォームである．GitHu
 \begin{description}
 \item[機能1] 任意の文字列を発言する機能\\
   この機能は，ユーザの``@nakagawabot 「(任意の文字列)」と言って''という発言に対して，SlackBotが(任意の文字列)と発言する．例えば，``@nakagawabot 「こんにちは」と言って''とユーザが発言した場合，Slackbotは``こんにちは''と発言する．\label{func1}
-\item[機能2] ランダムに生成された文字列を発言する機能\\
+\item[機能2] ランダムな単語を発言する機能\\
   ユーザが``@nakagawabot 「password」''と発言した場合，SlackBotはランダムに生成された文字列を発言する．例えば，``@nakagawabot 「password」''という発言に対し，SlackBotは"knockers"のように発言する．
 \end{description}
 なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザー名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
@@ -115,13 +115,7 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 \item SlackがSlackBotサーバの発言を表示することで，クライアントは発言を確認できる．
 \end{enumerate}
 
-\begin{figure}
- \centering
- \includegraphics[keepaspectratio, scale=0.5]
-      {slackbot-grf}
- \caption{WebHookとAPIを利用したSlackBotの処理の流れ}
-\end{figure}
-%%\insertfigure[0.8]{slackbot}{slackbot}{WebHookとAPIを利用したSlackBotの処理の流れ}{slackbot}
+\insertfigure[0.8]{slackbot}{slackbot}{WebHookとAPIを利用したSlackBotの処理の流れ}{slackbot}
 
 \subsection{手順}
 \subsubsection{SlackのIncoming WebHookの設定}\label{sec:IW}
@@ -157,7 +151,7 @@ https://<work_space>.slack.com/apps/manage/custom-integrations
 \end{enumerate}
 
 
-\subsubsection{ランダムなユーザー生成APIのURLの取得}\label{sec:api}
+\subsubsection{ランダムなユーザー情報を生成するAPIのURLの取得}\label{sec:api}
 Random User Generatorという名前のAPIのURLを取得する．
 \begin{enumerate}
 \item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムなユーザー情報を受け取ることができる．
