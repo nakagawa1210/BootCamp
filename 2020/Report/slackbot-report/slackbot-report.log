@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  11 JUN 2020 14:51
+This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  15 JUN 2020 10:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -73,58 +73,61 @@ File: dvipdfmx.def 2017/06/24 v5.0g Graphics/color driver for dvipdfmx
 \Gin@req@height=\dimen124
 \Gin@req@width=\dimen125
 )
-
-! LaTeX Error: File `comment.sty' not found.
-
-Type X to quit or <RETURN> to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: reportForm
-(sty/reportForm.sty) (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-)
-(sty/jtygm.sty
+) (sty/jtygm.sty
 Package: jtygm 1998/06/12 based on v1.3 KANJI font defines
+)
+(sty/nutils.sty
+Package: nutils 2014/11/22 v1.0 by Yoshinari Nomura
 ) (./slackbot-report.aux)
 \openout1 = `slackbot-report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
 LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
-(Font)              scaled to size 16.60605pt on input line 32.
+(Font)              scaled to size 16.60605pt on input line 31.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 16.60605pt on input line 32.
+(Font)              scaled to size 16.60605pt on input line 31.
+LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
+(Font)              scaled to size 13.83836pt on input line 41.
+LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
+(Font)              scaled to size 13.83836pt on input line 41.
 LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
-(Font)              scaled to size 9.60999pt on input line 60.
+(Font)              scaled to size 13.83836pt on input line 41.
 LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
-(Font)              scaled to size 9.60999pt on input line 60.
+(Font)              scaled to size 13.83836pt on input line 41.
+LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
+(Font)              scaled to size 9.60999pt on input line 59.
+LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
+(Font)              scaled to size 9.60999pt on input line 59.
  [1
 
 ]
 No file slackbot-report.bbl.
 [2] (./slackbot-report.aux) ) 
 Here is how much of TeX's memory you used:
- 929 strings out of 494319
- 11209 string characters out of 6171546
- 77124 words of memory out of 5000000
- 4861 multiletter control sequences out of 15000+600000
- 9401 words of font info for 42 fonts, out of 8000000 for 9000
+ 944 strings out of 494319
+ 11135 string characters out of 6171546
+ 76247 words of memory out of 5000000
+ 4875 multiletter control sequences out of 15000+600000
+ 10568 words of font info for 48 fonts, out of 8000000 for 9000
  269 hyphenation exceptions out of 8191
- 25i,4n,21p,489b,398s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,4n,21p,489b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on slackbot-report.dvi (2 pages, 4644 bytes).
+Output written on slackbot-report.dvi (2 pages, 4932 bytes).

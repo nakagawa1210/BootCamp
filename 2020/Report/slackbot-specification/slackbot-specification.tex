@@ -13,7 +13,6 @@
 \def\labelenumiii{(\theenumiii)}
 \def\theenumiv{\roman{enumiv}}
 \def\labelenumiv{(\theenumiv)}
-\usepackage{reportForm}
 \usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,11 +65,10 @@
 なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザー名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
 
 \section{動作環境}\label{sec:env}
-本プログラムの動作環境を表\ref{tab:2}に示す．なお，本プログラムが表\ref{tab:2}の動作環境で動作することは確認済みである．
+本プログラムの動作環境を表\ref{tab:1}に示す．なお，本プログラムが表\ref{tab:1}の動作環境で動作することは確認済みである．
 \begin{table}[h]
   \begin{center}
-    \caption{動作環境}\label{tab:2}
-  %%  \ecaption{Operating environment.}
+    \caption{動作環境}\label{tab:1}
     \begin{tabular}{l|l}
       \hline\hline
       \multicolumn{1}{l|}{項目} & \multicolumn{1}{l}{内容}\\
@@ -144,7 +142,8 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 
 
 \subsubsection{ランダムなユーザー情報を生成するAPIの動作の確認}\label{sec:api}
-Random User Generatorという名前のAPIのサイトがある．
+Random User Generatorという名前のAPIのサイトがある．このAPI を利用してランダムなスーザー情報を生成し，その情報を受け取る．このプログラムでは生成された情報の中のpassword の項目を利用している．
+
 \begin{enumerate}
 \item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムなユーザー情報を受け取ることができる．
 \begin{verbatim}
@@ -202,16 +201,15 @@ $ git push heroku master
 
 \section{エラー処理と保証しない動作}
 \subsection{エラー処理}
-本プログラムでは特にエラー処理は行っていないので機能2で使用しているサイトが閉鎖していたり，障害でアクセスできなかったりするとプログラムが正常に動作せず，発言が返ってこない．
+本プログラムでは特にエラー処理は行っていない．そのため(機能2)で使用しているサイトが閉鎖していたり，障害でアクセスできなかったりするとプログラムが正常に動作せず，発言が返ってこない．
 
 \subsection{保証しない動作}
 本プログラムが保証しない動作を以下に示す．
 \begin{enumerate}
 \item SlackのOutgoing WebHook以外からのPOSTリクエストを受け取った際の動作
-%%\item \tabref{tab:2}に示す動作環境以外でプログラムを実行した時の動作
 \end{enumerate}
 
 \bibliographystyle{ipsjunsrt}
-\bibliography{mybibdata}
+%\bibliography{mybibdata}
 
 \end{document}

@@ -13,13 +13,12 @@
 \def\labelenumiii{(\theenumiii)}
 \def\theenumiv{\roman{enumiv}}
 \def\labelenumiv{(\theenumiv)}
-\usepackage{comment}
 \usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% sty/ にある研究室独自のスタイルファイル
 \usepackage{jtygm}  % フォントに関する余計な警告を消す
-%\sepackage{nutils} % insertfigure, figref, tabref マクロ
+\usepackage{nutils} % insertfigure, figref, tabref マクロ
 
 \def\figdir{./figs} % 図のディレクトリ
 \def\figext{pdf}    % 図のファイルの拡張子
@@ -57,7 +56,7 @@
 \section{理解できなかった部分}\label{sec3}
 理解できなかった部分を以下に示す．
 \begin{enumerate}
-  \item \verb|password|メソッドに記述されている以下のコード
+\item \verb|password|メソッドに記述されている以下のコード  
 \begin{verbatim}
     36	  def password
     37	    url = URI.parse("https://randomuser.me/api/")

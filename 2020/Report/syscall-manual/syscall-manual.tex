@@ -13,7 +13,6 @@
 \def\labelenumiii{(\theenumiii)}
 \def\theenumiv{\roman{enumiv}}
 \def\labelenumiv{(\theenumiv)}
-\usepackage{reportForm}
 \usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -34,32 +33,17 @@
 \end{center}
 
 \begin{flushright}
-  2020/6/18\\
+  2020/6/24\\
   中川 雄介
 \end{flushright}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 概要
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{はじめに}\label{sec:hajime}
+\section{概要}\label{sec:hajime}
 \label{sec:introduction}
-本手順書では，Linux カーネルへシステムコールを追加する方法を記す．カーネルへシステムコールを追加するには，Linux のソースコードを取得してシステムコールのソースコードを追加した後，カーネルの再構築を行う．また，本手順書で想定する読者はコンソールの基本的な操作を習得しているものとする．以下に本手順書の章立てを示す．
-
-\ref{sec:hajime}章　はじめに
-
-\ref{sec:env}章　実装環境
-
-\ref{sec:gaiyou}章　追加したシステムコールの概要
-
-\ref{sec:tejun}章　システムコール追加の手順
-
-\ref{sec:test}章　テスト
-
-\ref{sec:owari}章　おわりに
-
-\ref{sec:huroku}章　付録
+本手順書では，Linux カーネルへシステムコールを追加する方法を記す．カーネルへシステムコールを追加するには，Linux のソースコードを取得してシステムコールのソースコードを追加した後，カーネルの再構築を行う．また，本手順書で想定する読者はコンソールの基本的な操作を習得しているものとする．
 
 \section{実装環境}\label{sec:env}
-
 システムコールを追加した環境を表\ref{tab:1}に示す．導入済みパッケージのうちgit はlinux の取得に，gcc， make， bc， libncurses5-dev はカーネルの再構築に用いる．
 \begin{table}[h]
   \begin{center}
@@ -69,10 +53,10 @@
       \hline\hline
       \multicolumn{1}{l|}{項目} & \multicolumn{1}{l}{環境}\\
       \hline
-      OS &  \\
-      カーネル & \\
-      CPU & \\
-      メモリ & \\
+      OS & Debian GNU/Linux 10 (buster) \\
+      カーネル & Linux 4.19.0+\\
+      CPU & Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz\\
+      メモリ & 16GB\\
       \hline
     \end{tabular}
   \end{center}
@@ -81,13 +65,13 @@
 \section{追加したシステムコールの概要}\label{sec:gaiyou}
 今回は，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加した．ソースコードは付録A に添付してある．
 
-システムコールの関数名は とした．システムコールの概要を以下に示す．
+システムコールの関数名はmy\_syscall とした．システムコールの概要を以下に示す．
 
-【形式】　()
+【形式】 asmlinkage void my\_syscall(char *buf, int count)
 
-【引数】　char * :任意の文字列
+【引数】 char *buf :任意の文字列，int count :表示したい文字数
 
-【戻り値】なし
+【戻り値】 long err :エラー処理用
 
 【機能】カーネルのメッセージバッファに任意の文字列を出力する．
 
@@ -121,20 +105,22 @@
 以降では上記の手順について述べる．(1)については第\ref{sec:syutoku}節，(2)については第\ref{sec:hensyuu}節，(3)については第\ref{sec:saikoutiku}節で述べる．
 \subsection{Linux カーネルの取得}\label{sec:syutoku}
   \begin{enumerate}
-  \item Linux のソースコードの取得
+  \item Linux のソースコードの取得\\    
     Linux のソースコードを取得する．Linux のソースコードはGitで管理されている．Git とはオープンソースの分散型バージョン管理システムである．下記のGit リポジトリからクローンすることで，Linux のソースコードを取得する．リポジトリとはファイルやディレクトリの状態を記録する場所のことであり，クローンとはリポジトリの内容を任意のディレクトリに複製すことである．
 \begin{verbatim}
- git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl
+e.git
 \end{verbatim}
 本手順書では，/home/nakagawa/git 以下のディレクトリでソースコードを管理する．
 /home/nakagawa で以下のコマンドを実行する．
 \begin{verbatim}
  $ mkdir git
  $ cd git
- $ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+ $ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st
+   able.git
 \end{verbatim}
 実行すると，mkdir コマンドによりgit ディレクトリが作成され，cd コマンドによりgit ディレクトリに移動する．git clone コマンドにより/home/nakagawa/git 以下にlinux-stable ディレクトリが作成される．このlinux-stable ディレクトリ以下にLinux のソースコードが格納されている．
-\item ブランチの作成と切り替え
+\item ブランチの作成と切り替え\\
   Linux カーネルのソースコードのバージョンを切り替えるため，ブランチの作成と切り替えを行う．ブランチとは開発の履歴を管理するため分岐である．
   /home/nakgawa/git/linux-stable で以下のコマンドを実行する．
 \begin{verbatim}
@@ -142,51 +128,55 @@ $ git checkout -b 4.19 v4.19
 \end{verbatim}
   実行後，v4.19 というタグが示すコミットからブランチ4.19が作成され，ブランチ3.16に切り替わる．コミットとはある時点における開発の状態を記録したものである．タグとはコミットを識別するためにつける印である．
   \end{enumerate}
+  
 \subsection{ソースコードの編集}\label{sec:hensyuu}
 ソースコードの左端に書かれている数字は行数を表し，追加した行には + を，削除した行には - をつけている．
   \begin{enumerate}
-  \item システムコールの作成
+  \item システムコールの作成\\    
     /home/nakagawa/git/linux-stable/kernel/sys.c に第\ref{sec:gaiyou}章で示したシステムコールを追加する．
-  \item システムコール番号の設定
-    \verb|/home/nakagawa/git/linux-stable/kernel/arch/x86/entry/syscalls/syscall_64.tbl| を編集して，追加するシステムコール番号を定義する．追加する際には既存のシステムコール番号と重複しないようにする．今回は作成したシステムコールの番号を400とした．このシステムコール番号は，システムコールを呼び出す際に必要になる．編集例を以下に示す．
+  \item システムコール番号の設定\\
+    /home/nakagawa/git/linux-stable/arch/x86/entry/syscalls/syscall\_64.tbl を編集して，追加するシステムコール番号を定義する．追加する際には既存のシステムコール番号と重複しないようにする．今回は作成したシステムコールの番号を400とした．このシステムコール番号は，システムコールを呼び出す際に必要になる．編集例を以下に示す．
+    
 \begin{verbatim}
-        334     common rseq             __x64_sys_rseq
-+       400     common my_syscall       __x64_sys_my_syscall
+   346     334     common rseq             __x64_sys_rseq
++  347     400     common my_syscall       __x64_sys_my_syscall
 \end{verbatim}
-\item システムコールのプロトタイプ宣言
+
+\item システムコールのプロトタイプ宣言\\  
   /home/nakagawa/git/linux-stable/include/linux/syscalls.h を編集して，追加するシステムコールのプロトタイプ宣言を記述する．編集例を以下に示す．
 \begin{verbatim}
-+       asmlinkage long sys_my_syscall(char __user *buf, int count);
++   1296    asmlinkage long sys_my_syscall(char __user *buf, int count);
 \end{verbatim}
   \end{enumerate}
+  
 \subsection{カーネルの再構築}\label{sec:saikoutiku}
   \begin{enumerate}
-  \item .config ファイルの作成
+  \item .config ファイルの作成\\
     .config ファイを作成する．.config ファイルとはカーネルの設定を記述したコンフィギュレーションファイルである．以下のコマンドを実行し，コンフィギュレーションを作成する．エラーが発生した場合，エラー内容に応じて必要なパッケージをインストールする．
 \begin{verbatim}
 $ make defconfig
 \end{verbatim}
-\item カーネルのコンパイル
+\item カーネルのコンパイル\\
   Linux カーネルをコンパイルする．以下のコマンドを実行する．
 \begin{verbatim}
-$ sudo apt-get -y install libssl-dev ([masafumi.icon])
-$ sudo apt-get -y install bc ([masafumi.icon])
-$ make bzImage -j8
+$ sudo apt-get -y install libssl-dev
+$ sudo apt-get -y install bc
+$ sudo make bzImage -j8
 \end{verbatim}
 上記コマンドの「-jN」オプションは，同時に実行できるジョブ数をN個に指定する．ジョブ数が多すぎるとメモリ不足により実行速度が低下する場合があるため，適切なジョブ数を指定する必要がある．ジョブ数はCPUのコア数の2倍の数が効果的であるため，ジョブ数は4コアの2倍の8とした．コマンド実行後，/home/nakagawa/git/linux-stable/arch/x86/boot 以下にbzImage という名前の圧縮カーネルイメージが作成される．カーネルイメージとは実行可能形式のカーネルを含むファイルである．同時に，/home/nakagawa/git/linux-stable 以下に全てのカーネルシンボルのアドレスを記述したSystem.map が作成される．カーネルシンボルとはカーネルのプログラムが格納されたメモリアドレスと対応付けられた文字列のことである．
-\item カーネルのインストール
+\item カーネルのインストール\\
   コンパイルしたカーネルをインストールする．以下のコマンドを実行する．
 \begin{verbatim}
  $ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-4.19.0-linux
  $ sudo cp System.map /boot/System.map-4.19.0-linux
 \end{verbatim}
 実行後，bzImage とSystem.map が，/boot 以下にそれぞれvmlinuz-4.19.0-linux とSystem.map-4.19.0-linux という名前でコピーされる．
-\item カーネルモジュールのコンパイル
+\item カーネルモジュールのコンパイル\\
   カーネルモジュールをコンパイルする．カーネルモジュールとは機能を拡張するためのバイナリファイルである．以下のコマンドを実行する．
 \begin{verbatim}
 $ make modules
 \end{verbatim}
-\item カーネルモジュールのインストール
+\item カーネルモジュールのインストール\\
   コンパイルしたカーネルモジュールをインストールする．以下のコマンドを実行する．
 \begin{verbatim}
 $ sudo make modules_install
@@ -196,17 +186,18 @@ $ sudo make modules_install
 DEPMOD 4.19.0
 \end{verbatim}
 上記の例では，/lib/modules/4.19.0 ディレクトリにカーネルモジュールがインストールされている．このディレクトリ名は後の手順 で必要となるため，控えておく．
-\item 初期RAM ディスクの作成
+\item 初期RAM ディスクの作成\\
   初期RAMディスクを作成する．初期RAMディスクとは初期ルートファイルシステムのことである．これは実際のルートファイルシステムが使用できるようになる前にマウントされる．以下のコマンドを実行する．
 \begin{verbatim}
   $ sudo update-initramfs -c -k 4.19.0
 \end{verbatim}
 先ほど控えておいたディレクトリ名をコマンドの引数として与える．実行後，/boot 以下に初期RAM ディスクinitrd.img-4.19.0 が作成される．
-\item ブートローダーの設定
-システムコールを実装したカーネルをブートローダから起動可能にするために，ブートローダを設定する．ブートローダの設定ファイルは/boot/grub/grub.cfg である．エントリを追加するためにはこのファイルを編集する必要がある．Debian10.3 で使用されているブートローダはGRUB2 である．GRUB2 でカーネルのエントリを追加する際，設定ファイルを直接編集しない．/etc/grub.d 以下にエントリ追加用のスクリプトを作成し，そのスクリプトを実行することでエントリを追加する．ブートローダを設定する手順を以下に示す．
+\item ブートローダーの設定\\
+  システムコールを実装したカーネルをブートローダから起動可能にするために，ブートローダを設定する．ブートローダの設定ファイルは/boot/grub/grub.cfg である．エントリを追加するためにはこのファイルを編集する必要がある．Debian10.3 で使用されているブートローダはGRUB2 である．GRUB2 でカーネルのエントリを追加する際，設定ファイルを直接編集しない．/etc/grub.d 以下にエントリ追加用のスクリプトを作成し，そのスクリプトを実行することでエントリを追加する．ブートローダを設定する手順を以下に示す．
+    \end{enumerate}
 \begin{enumerate}
-\item エントリ追加用のスクリプトの作成
-  カーネルのエントリを追加するため，エントリ追加用のスクリプトを作成する．本手順書では，既存のファイル名に倣い作成するスクリプトのファイル名は11_linux-4.19.0 とする．スクリプトの記述例を以下に示す．
+\item エントリ追加用のスクリプトの作成\\
+  カーネルのエントリを追加するため，エントリ追加用のスクリプトを作成する．本手順書では，既存のファイル名に倣い作成するスクリプトのファイル名は11\_linux-4.19.0 とする．スクリプトの記述例を以下に示す．
 \begin{verbatim}
  1 #!/bin/sh -e
  2 echo "Adding my custom Linux to GRUB2"
@@ -221,41 +212,41 @@ DEPMOD 4.19.0
 スクリプトに記述された各項目について以下に示す．
 
 \begin{enumerate}
-\item menuentry <表示名>
-  <表示名>: カーネル選択画面に表示される名前
-\item set root=(<HDD 番号>，<パーティション番号>)
-  <HDD 番号>: カーネルが保存されているHDD の番号
-  <パーティション番号>: HDD の/boot が割り当てられたパーティション番号
-\item linux <カーネルイメージのファイル名>
-  <カーネルイメージのファイル名>: 起動するカーネルのカーネルイメージ
-\item ro <root デバイス>
-  <root デバイス>: 起動時に読み込み専用でマウントするデバイス
-\item root=<ルートファイルシステム> <その他のブートオプション>
-  <ルートファイルシステム>: /root を割り当てたパーティション
-  <その他のブートオプション>: quiet はカーネルの起動時に出力するメッセージを省略する．
-\item initrd <初期RAMディスク名>
-  <初期RAMディスク名>: 起動時にマウントする初期RAMディスク名
+\item menuentry \textless 表示名\textgreater \\
+  \textless 表示名\textgreater : カーネル選択画面に表示される名前
+\item set root=(\textless HDD 番号\textgreater ，\textless パーティション番号\textgreater )\\
+  \textless HDD 番号\textgreater : カーネルが保存されているHDD の番号\\
+  \textless パーティション番号\textgreater : HDD の/boot が割り当てられたパーティション番号
+\item linux \textless カーネルイメージのファイル名\textgreater \\
+  \textless カーネルイメージのファイル名\textgreater : 起動するカーネルのカーネルイメージ
+\item ro \textless root デバイス\textgreater \\
+  \textless root デバイス\textgreater : 起動時に読み込み専用でマウントするデバイス
+\item root=\textless ルートファイルシステム\textgreater  \textless その他のブートオプション\textgreater \\
+  \textless ルートファイルシステム\textgreater : /root を割り当てたパーティション\\
+  \textless その他のブートオプション\textgreater : quiet はカーネルの起動時に出力するメッセージを省略する．
+\item initrd \textless 初期RAMディスク名\textgreater \\
+  \textless 初期RAMディスク名\textgreater : 起動時にマウントする初期RAMディスク名
 \end{enumerate}
 
-\item 実行権限の付与
+\item 実行権限の付与\\
   /etc/grub.d で以下のコマンドを実行し，作成したスクリプトに実行権限を付与する．
 \begin{verbatim}
 $ sudo chmod +x 11_linux-4.19.0
 \end{verbatim}
-\item エントリ追加用のスクリプトの実行
+\item エントリ追加用のスクリプトの実行\\
   以下のコマンドを実行し，作成したスクリプトを実行する．
 \begin{verbatim}
 $ sudo update-grub
 \end{verbatim}
-エントリ追加用のスクリプトの実行後，/boot/grub/grub.cfg にシステムコールを実装したカーネルのエントリが追加される．
-\end{enumerate}
-\item 再起動
+エントリ追加用のスクリプトの実行後，/boot/grub/grub.cfg にシステムコールを実装したカーネルのエントリが追加される
+\item 再起動\\
   任意のディレクトリで以下のコマンドを実行し，計算機を再起動させる．
 \begin{verbatim}
 $ sudo reboot
 \end{verbatim}
 再起動後，GRUB2 のカーネル選択画面にエントリが追加されている．手順(7A)のスクリプトを用いた場合，カーネル選択画面でMy custom Linux を選択し，起動する．
-  \end{enumerate}
+\end{enumerate}
+
 \section{テスト}\label{sec:test}
  \subsection{概要}
  本手順書で追加したシステムコールが実装されているか確認するために，以下の手順で，実際に追加したシステムコール実行してテストする．
@@ -267,30 +258,79 @@ $ sudo reboot
 \subsection{テストプログラムの作成}\label{sec:test_sakusei}
 システムコールを実行するテストプログラムを作成する．本手順書ではテストプログラムの名前を\verb|call_my_syscall.c| とし/home/nakagawa/git/linux-stable 以下に作成する．テストプログラムの処理の流れは以下の通りである．
 \begin{enumerate}
- \item 任意の文字列を定義する
+ \item 引数で任意の文字列を受け取る
  \item \verb|call_my_syscall.c| のシステムコール番号でsyscall() を呼び出す
+ \item エラーがなければカーネルに出力した文字列を表示する
 \end{enumerate}
 このプログラムを実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力される．作成したテストプログラムのソースコードを付録Bに添付してある．
 \subsection{テストプログラムの実行}
-\label{ref:test_sakusei} 節で作成したプログラムをコンパイルし実行する．以下のコマンドを実行する．
+\ref{sec:test_sakusei} 節で作成したプログラムをコンパイルし実行する．以下のコマンドを実行する．
 \begin{verbatim}
 $ gcc call_my_syscall.c
 $ ./a.out test
+\end{verbatim}
+実行後，システムコールが追加できていれば以下のような結果が得られる．
+\begin{verbatim}
+$ print buf = test
 \end{verbatim}
 \subsection{システムコールの確認}
-実行後，システムコールが追加できていれば以下のような結果が得られる．なお，角括弧内の数字はカーネル起動開始時からの経過時間を表す．
+カーネルのメッセージバッファを確認する．以下のコマンドを実行する．
 \begin{verbatim}
-$ gcc call_my_syscall.c
-$ ./a.out test
+$ sudo dmesg | tail
+\end{verbatim}
+実行後，システムコールが追加できていれば以下のような結果が得られる．なお，角括弧内の数字はカーネル起動開始からの経過時間を表す．
+\begin{verbatim}
+$ [ 533.131041] <MY_SYSCALL>test
 \end{verbatim}
 
-\section{おわりに}\label{sec:owari}
-本手順書では，カーネルへシステムコールを追加する手順を示した．また，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加し，機能が正しく動作しているか否かを確認するためのテスト方法について示した．
-
 \section{付録}\label{sec:huroku}
- \subsection{システムコールのソースコード}
-  \subsection{テストプログラムのソースコード}
-
+\subsection{システムコールのソースコード}
+\begin{verbatim}
+   147	SYSCALL_DEFINE2(my_syscall, char __user *, buf, int, count){
+   148		long err;
+   149		char text[128]= {0};
+   150	
+   151		if(count > sizeof(text)){
+   152			return (-ENOMEM);
+   153		}
+   154	
+   155		err = copy_from_user(text, buf, 128);
+   156	
+   157		printk("<MY_SYSCALL>%s", text);
+   158		printk("");
+   159	
+   160		return(err);
+   161	}
+\end{verbatim}
+ \subsection{テストプログラムのソースコード}
+\begin{verbatim}
+     1	#include <stdio.h>
+     2	#include <unistd.h>
+     3	#include <string.h>
+     4	
+     5	#define SYS_my_syscall 400
+     6	
+     7	int main(int argc, char *argv[]){
+     8	
+     9		char buf[128] ="default_message";
+    10		long ret;
+    11	
+    12		if(argc != 1){
+    13		strncpy(buf, argv[1], 128);
+    14		buf[127] = '\0';
+    15		}
+    16	
+    17		ret = syscall(SYS_my_syscall, buf, 128);
+    18	
+    19		if(ret<0){
+    20			fprintf(stderr, "err:%ld\n", ret);
+    21		}else{
+    22			printf("print buf = %s\n",buf);
+    23		}
+    24	
+    25		return (0);
+    26	}
+\end{verbatim}
 \bibliographystyle{ipsjunsrt}
 %\bibliography{mybibdata}
 
