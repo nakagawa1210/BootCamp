@@ -69,7 +69,7 @@
 
 【形式】 asmlinkage void my\_syscall(char *buf, int count)
 
-【引数】 char *buf :任意の文字列，int count :表示したい文字数
+【引数】 char *buf :任意の文字列，int count :表示したい文字列の文字数
 
 【戻り値】 long err :エラー処理用
 
@@ -249,20 +249,20 @@ $ sudo reboot
 
 \section{テスト}\label{sec:test}
  \subsection{概要}
- 本手順書で追加したシステムコールが実装されているか確認するために，以下の手順で，実際に追加したシステムコール実行してテストする．
+ 本手順書で追加したシステムコールが実装されているか確認する．以下の手順で，追加したシステムコールを実行してテストする．
 \begin{enumerate}
  \item テストプログラムの作成
  \item テストプログラムの実行
- \item システムコールの確認
+ \item システムコールの実行結果の確認
 \end{enumerate}
 \subsection{テストプログラムの作成}\label{sec:test_sakusei}
 システムコールを実行するテストプログラムを作成する．本手順書ではテストプログラムの名前を\verb|call_my_syscall.c| とし/home/nakagawa/git/linux-stable 以下に作成する．テストプログラムの処理の流れは以下の通りである．
 \begin{enumerate}
  \item 引数で任意の文字列を受け取る
  \item \verb|call_my_syscall.c| のシステムコール番号でsyscall() を呼び出す
- \item エラーがなければカーネルに出力した文字列を表示する
+ \item エラーがなければ受け取った文字列を表示する
 \end{enumerate}
-このプログラムを実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力される．作成したテストプログラムのソースコードを付録Bに添付してある．
+このプログラムに引数として任意の文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを付録Bに添付してある．
 \subsection{テストプログラムの実行}
 \ref{sec:test_sakusei} 節で作成したプログラムをコンパイルし実行する．以下のコマンドを実行する．
 \begin{verbatim}
@@ -273,7 +273,7 @@ $ ./a.out test
 \begin{verbatim}
 $ print buf = test
 \end{verbatim}
-\subsection{システムコールの確認}
+\subsection{システムコールの実行結果の確認}
 カーネルのメッセージバッファを確認する．以下のコマンドを実行する．
 \begin{verbatim}
 $ sudo dmesg | tail
