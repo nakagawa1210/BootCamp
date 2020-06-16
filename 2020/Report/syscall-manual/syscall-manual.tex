@@ -63,11 +63,11 @@
 \end{table}
 
 \section{追加したシステムコールの概要}\label{sec:gaiyou}
-今回は，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加した．ソースコードは付録A に添付してある．
+今回は，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加した．ソースコードは\ref{sec:syscall} 節に添付してある．
 
 システムコールの関数名はmy\_syscall とした．システムコールの概要を以下に示す．
 
-【形式】 asmlinkage void my\_syscall(char *buf, int count)
+【形式】 asmlinkage void my\_syscall(char \_\_user *buf, int count)
 
 【引数】 char *buf :任意の文字列，int count :表示したい文字列の文字数
 
@@ -126,11 +126,11 @@ e.git
 \begin{verbatim}
 $ git checkout -b 4.19 v4.19
 \end{verbatim}
-  実行後，v4.19 というタグが示すコミットからブランチ4.19が作成され，ブランチ3.16に切り替わる．コミットとはある時点における開発の状態を記録したものである．タグとはコミットを識別するためにつける印である．
+  実行後，v4.19 というタグが示すコミットからブランチ4.19が作成され，ブランチ4.19に切り替わる．コミットとはある時点における開発の状態を記録したものである．タグとはコミットを識別するためにつける印である．
   \end{enumerate}
   
 \subsection{ソースコードの編集}\label{sec:hensyuu}
-ソースコードの左端に書かれている数字は行数を表し，追加した行には + を，削除した行には - をつけている．
+ソースコードの左端に書かれている数字は行数を表し，追加した行には + をつけている．
   \begin{enumerate}
   \item システムコールの作成\\    
     /home/nakagawa/git/linux-stable/kernel/sys.c に第\ref{sec:gaiyou}章で示したシステムコールを追加する．
@@ -194,9 +194,8 @@ DEPMOD 4.19.0
 先ほど控えておいたディレクトリ名をコマンドの引数として与える．実行後，/boot 以下に初期RAM ディスクinitrd.img-4.19.0 が作成される．
 \item ブートローダーの設定\\
   システムコールを実装したカーネルをブートローダから起動可能にするために，ブートローダを設定する．ブートローダの設定ファイルは/boot/grub/grub.cfg である．エントリを追加するためにはこのファイルを編集する必要がある．Debian10.3 で使用されているブートローダはGRUB2 である．GRUB2 でカーネルのエントリを追加する際，設定ファイルを直接編集しない．/etc/grub.d 以下にエントリ追加用のスクリプトを作成し，そのスクリプトを実行することでエントリを追加する．ブートローダを設定する手順を以下に示す．
-    \end{enumerate}
 \begin{enumerate}
-\item エントリ追加用のスクリプトの作成\\
+\item エントリ追加用のスクリプトの作成\\\label{sec:script}
   カーネルのエントリを追加するため，エントリ追加用のスクリプトを作成する．本手順書では，既存のファイル名に倣い作成するスクリプトのファイル名は11\_linux-4.19.0 とする．スクリプトの記述例を以下に示す．
 \begin{verbatim}
  1 #!/bin/sh -e
@@ -227,7 +226,7 @@ DEPMOD 4.19.0
 \item initrd \textless 初期RAMディスク名\textgreater \\
   \textless 初期RAMディスク名\textgreater : 起動時にマウントする初期RAMディスク名
 \end{enumerate}
-
+  \end{enumerate}
 \item 実行権限の付与\\
   /etc/grub.d で以下のコマンドを実行し，作成したスクリプトに実行権限を付与する．
 \begin{verbatim}
@@ -244,7 +243,7 @@ $ sudo update-grub
 \begin{verbatim}
 $ sudo reboot
 \end{verbatim}
-再起動後，GRUB2 のカーネル選択画面にエントリが追加されている．手順(7A)のスクリプトを用いた場合，カーネル選択画面でMy custom Linux を選択し，起動する．
+再起動後，GRUB2 のカーネル選択画面にエントリが追加されている．手順\ref{sec:script} のスクリプトを用いた場合，カーネル選択画面でMy custom Linux を選択し，起動する．
 \end{enumerate}
 
 \section{テスト}\label{sec:test}
@@ -262,7 +261,7 @@ $ sudo reboot
  \item \verb|call_my_syscall.c| のシステムコール番号でsyscall() を呼び出す
  \item エラーがなければ受け取った文字列を表示する
 \end{enumerate}
-このプログラムに引数として任意の文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを付録Bに添付してある．
+このプログラムに引数として任意の文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．
 \subsection{テストプログラムの実行}
 \ref{sec:test_sakusei} 節で作成したプログラムをコンパイルし実行する．以下のコマンドを実行する．
 \begin{verbatim}
@@ -283,8 +282,9 @@ $ sudo dmesg | tail
 $ [ 533.131041] <MY_SYSCALL>test
 \end{verbatim}
 
-\section{付録}\label{sec:huroku}
-\subsection{システムコールのソースコード}
+\section{作成したプログラムのソースコード}
+\subsection{システムコールのソースコード}\label{sec:syscall}
+ /home/nakagawa/git/linux-stable/kernel/sys.c に追加したソースコードを抜粋して以下に示す．
 \begin{verbatim}
    147	SYSCALL_DEFINE2(my_syscall, char __user *, buf, int, count){
    148		long err;
@@ -302,7 +302,7 @@ $ [ 533.131041] <MY_SYSCALL>test
    160		return(err);
    161	}
 \end{verbatim}
- \subsection{テストプログラムのソースコード}
+ \subsection{テストプログラムのソースコード}\label{sec:test}
 \begin{verbatim}
      1	#include <stdio.h>
      2	#include <unistd.h>

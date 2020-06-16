@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  15 JUN 2020 17:03
+This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  16 JUN 2020 12:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -81,7 +81,11 @@ Package: jtygm 1998/06/12 based on v1.3 KANJI font defines
 )
 (sty/nutils.sty
 Package: nutils 2014/11/22 v1.0 by Yoshinari Nomura
-) (./syscall-manual.aux)
+) (./syscall-manual.aux
+
+LaTeX Warning: Label `sec:test' multiply defined.
+
+)
 \openout1 = `syscall-manual.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
@@ -145,23 +149,27 @@ Underfull \hbox (badness 1038) in paragraph at lines 114--116
 0 以下のデ ィレクトリでソ ースコ ードを管理す
  []
 
-[2] [3] [4] [5]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 215.
+[2] [3] [4]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 214.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 215.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 214.
+ [5]
+[6] [7] [8] [9] (./syscall-manual.aux)
 
-[6] [7] [8] [9] (./syscall-manual.aux) ) 
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 973 strings out of 494319
- 11616 string characters out of 6171546
+ 974 strings out of 494319
+ 11629 string characters out of 6171546
  77247 words of memory out of 5000000
- 4901 multiletter control sequences out of 15000+600000
+ 4902 multiletter control sequences out of 15000+600000
  12499 words of font info for 59 fonts, out of 8000000 for 9000
  269 hyphenation exceptions out of 8191
  25i,9n,21p,685b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on syscall-manual.dvi (9 pages, 22292 bytes).
+Output written on syscall-manual.dvi (9 pages, 22388 bytes).
