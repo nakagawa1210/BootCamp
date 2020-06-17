@@ -65,26 +65,25 @@
 なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザー名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
 
 \section{動作環境}\label{sec:env}
-本プログラムの動作環境を表\ref{tab:1}に示す．なお，本プログラムが表\ref{tab:1}の動作環境で動作することは確認済みである．
+Herokuの環境を表\ref{tab:1}に示す．なお，本プログラムが表\ref{tab:1}の環境で動作することは確認済みである．
 \begin{table}[h]
   \begin{center}
-    \caption{動作環境}\label{tab:1}
+    \caption{Herokuの環境}\label{tab:1}
     \begin{tabular}{l|l}
       \hline\hline
       \multicolumn{1}{l|}{項目} & \multicolumn{1}{l}{内容}\\
       \hline
-      OS & Windows 10 \\
-      CPU & Intel(R) Core(TM) CPU m3-6Y30 @ 0.90GHz 1.51GHz\\
-      メモリ & 4.00GB\\
+      OS & Ubuntu 18.04.4 LTS\\
+      CPU & Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz\\
+      メモリ & 512MB\\
       Ruby & ruby 2.6.6p146\\
-      Ruby Gem & bundler 3.0.3\\
-      & mustermann 1.0.2\\
-      & rack 2.0.4\\
-      & rack-protection 2.0.1\\
-      & sinatra 2.0.1\\
-      & tilt 2.0.8\\
-      heroku & 7.40.0 win32-x64\\
-      & node v12.16.2\\
+      Ruby Gem & bundler 1.17.3\\
+      & mustermann 1.1.1\\
+      & rack 2.2.2\\
+      & rack-protection 2.0.8.1\\
+      & ruby2\_keywords 0.0.2\\
+      & sinatra 2.0.8.1\\
+      & tilt 2.0.10\\
       \hline
     \end{tabular}
   \end{center}
