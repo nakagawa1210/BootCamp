@@ -63,17 +63,17 @@
 \end{table}
 
 \section{追加したシステムコールの概要}\label{sec:gaiyou}
-今回は，カーネルのメッセージバッファに任意の文字列を出力するシステムコールを追加した．
+今回は，カーネルのメッセージバッファに文字列を出力するシステムコールを追加した．
 
 システムコールの関数名はmy\_syscall とした．システムコールの概要を以下に示す．
 
 【形式】 asmlinkage long my\_syscall(char \_\_user *buf, int count)
 
-【引数】 char *buf :任意の文字列，int count :表示したい文字列の文字数
+【引数】 char *buf :出力したい文字列，int count :出力したい文字列の文字数
 
 【戻り値】 long err :エラー処理用
 
-【機能】カーネルのメッセージバッファに任意の文字列を出力する．
+【機能】カーネルのメッセージバッファに文字列を出力する．
 
 \section{システムコール追加の手順}\label{sec:tejun}
  \subsection{概要}
@@ -106,7 +106,7 @@
 \subsection{Linux カーネルの取得}\label{sec:syutoku}
   \begin{enumerate}
   \item Linux のソースコードの取得\\    
-    Linux のソースコードを取得する．Linux のソースコードはGitで管理されている．Git とはオープンソースの分散型バージョン管理システムである．下記のGit リポジトリからクローンすることで，Linux のソースコードを取得する．リポジトリとはファイルやディレクトリの状態を記録する場所のことであり，クローンとはリポジトリの内容を任意のディレクトリに複製すことである．
+    Linux のソースコードを取得する．Linux のソースコードはGitで管理されている．Git とはオープンソースの分散型バージョン管理システムである．下記のGit リポジトリからクローンすることで，Linux のソースコードを取得する．リポジトリとはファイルやディレクトリの状態を記録する場所のことであり，クローンとはリポジトリの内容を指定のディレクトリに複製すことである．
 \begin{verbatim}
  git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl
 e.git
@@ -250,11 +250,11 @@ $ sudo reboot
 \subsection{テストプログラムの作成}\label{sec:test_sakusei}
 システムコールを実行するテストプログラムを作成する．本手順書ではテストプログラムの名前を\verb|call_my_syscall.c| とし/home/nakagawa/git/linux-stable 以下に作成する．テストプログラムの処理の流れは以下の通りである．
 \begin{enumerate}
- \item 引数で任意の文字列を受け取る
+ \item 引数で文字列を受け取る
  \item \verb|call_my_syscall.c| のシステムコール番号でsyscall() を呼び出す
  \item エラーがなければ受け取った文字列を表示する
 \end{enumerate}
-このプログラムに引数として任意の文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．
+このプログラムに引数として文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．
 \subsection{テストプログラムの実行}
 \ref{sec:test_sakusei} 節で作成したプログラムをコンパイルし実行する．以下のコマンドを実行する．
 \begin{verbatim}
