@@ -287,7 +287,7 @@ $ [ 533.131041] <MY_SYSCALL>test
    152	                 return (-ENOMEM);
    153	        }
    154	
-   155	        err = copy_from_user(text, buf, 128);
+   155	        err = copy_from_user(text, buf, strlen(buf));
    156	
    157	        printk("<MY_SYSCALL>%s", text);
    158	        printk("");
@@ -309,11 +309,11 @@ $ [ 533.131041] <MY_SYSCALL>test
     10	        long ret;
     11	
     12	        if(argc != 1){
-    13	                strncpy(buf, argv[1], 128);
-    14	                buf[127] = '\0';
+    13	                strncpy(buf, argv[1], strlen(argv[1]));
+    14	                buf[strlen(argv[1])] = '\0';
     15	        }
     16	
-    17	        ret = syscall(SYS_my_syscall, buf, 128);
+    17	        ret = syscall(SYS_my_syscall, buf, strlen(buf));
     18	
     19	        if(ret<0){
     20	                fprintf(stderr, "err:%ld\n", ret);
