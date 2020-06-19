@@ -49,9 +49,14 @@
   Slackでユーザが``「◯◯」と言って''の文字列を含む発言した場合に，SlackBotが``◯◯''と発言するプログラムを作成する．\label{item1}
 \item SlackBotプログラムへの機能追加\\
   Slack以外のWebサービスのAPIやWebhookを利用した機能を追加する．\label{item2}
-  今回追加した機能はSlackでユーザが''「password」''と発言した場合にSlackBotがランダムな単語を発言する機能である．
+  
 \end{enumerate}
-本課題で使用するRubyのバージョンは2.6.6である．また，作成したSlackBotプログラムのコード量は83行になった．
+本課題で使用するRubyのバージョンは2.6.6である．また，作成したSlackBotプログラムのコードの行数は83行になった．
+\section{SlackBotプログラムへ追加した機能}\label{func}
+今回SlaclBotプログラムへ追加した機能はSlackでユーザが``「password」''と発言した場合にSlackBotがランダムな単語を発言する機能である．追加した機能のプログラムが保存されているGitHubのURLを以下に示す．
+\begin{verbatim}
+https://github.com/nakagawa1210/BootCamp/blob/master/2020/Slackbot/SlackBot.rb
+\end{verbatim}
 
 \section{理解できなかった部分}\label{sec3}
 理解できなかった部分を以下に示す．
@@ -61,21 +66,24 @@
     36	  def password
     37	    url = URI.parse("https://randomuser.me/api/")
     38	    https = Net::HTTP.new(url.host, url.port)
-    39	    # httpsで通信する場合、use_sslをtrueにする
+    39	
     40	    https.use_ssl = true
-    41	    # 3.リクエストを作成する
+    41	
     42	    req = Net::HTTP::Get.new(url.path)
-    43	    # 4.リクエストを投げる/レスポンスを受け取る
+    43	
     44	    res = https.request(req)
-    45	    # 5.データを変換する
+    45	
     46	    hash = JSON.parse(res.body)
     47	
     48	    pass = hash["results"][0]["login"]["password"] 
     49	
     50	    return pass
     51	  end
+    52	  
+    53	end
 \end{verbatim}
-上記コードの37行目から46行目は，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換しているのだが，具体的に各関数でどのような処理が行われているかを完全には理解できていない．
+\verb|password| メソッドは呼び出された際にWebサービスのAPIへリクエストを作成し送信する．その後返信された情報の内\verb|password| のデータを戻り値として返している．
+上記コードの37行目から46行目は，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換している．しかし，具体的に各関数でどのような処理が行われているかは理解できていない．
 \end{enumerate}
    
 \section{自主的に作成した機能}\label{sec4}
@@ -83,8 +91,8 @@
 
 \section{作成できなかった機能}\label{sec5}
 \begin{enumerate}
-\item 各種コマンドの実装\\
-  \ref{sec2}章(\ref{item2})で実装した機能はパスワードしか返さないようになっているが，APIの機能としては他にも名前や生年月日等の情報を受け取っている．そのためコマンドによって発言する情報を変える機能を実装したかった．
+\item 各種機能の実装\\
+  \ref{func}章で実装した機能はパスワードしか返さないようになっている．しかし，WebサービスのAPIの機能として他にも名前や生年月日等の情報を作成している．このためユーザの発言内容によって発言する情報を変える機能を実装したかった．
 \end{enumerate}
 \bibliographystyle{ipsjunsrt}
 \bibliography{mybibdata}

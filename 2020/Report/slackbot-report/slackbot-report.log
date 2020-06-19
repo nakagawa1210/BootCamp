@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  15 JUN 2020 10:47
+This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  19 JUN 2020 17:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -113,21 +113,21 @@ LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
 LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
 (Font)              scaled to size 13.83836pt on input line 41.
 LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
-(Font)              scaled to size 9.60999pt on input line 59.
+(Font)              scaled to size 9.60999pt on input line 57.
 LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
-(Font)              scaled to size 9.60999pt on input line 59.
+(Font)              scaled to size 9.60999pt on input line 57.
  [1
 
 ]
 No file slackbot-report.bbl.
 [2] (./slackbot-report.aux) ) 
 Here is how much of TeX's memory you used:
- 944 strings out of 494319
- 11135 string characters out of 6171546
+ 945 strings out of 494319
+ 11141 string characters out of 6171546
  76247 words of memory out of 5000000
- 4875 multiletter control sequences out of 15000+600000
+ 4876 multiletter control sequences out of 15000+600000
  10568 words of font info for 48 fonts, out of 8000000 for 9000
  269 hyphenation exceptions out of 8191
- 25i,4n,21p,489b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,4n,21p,489b,259s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on slackbot-report.dvi (2 pages, 4932 bytes).
+Output written on slackbot-report.dvi (2 pages, 5324 bytes).
