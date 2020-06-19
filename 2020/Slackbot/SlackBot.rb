@@ -36,13 +36,13 @@ class SlackBot
   def password
     url = URI.parse("https://randomuser.me/api/")
     https = Net::HTTP.new(url.host, url.port)
-    # httpsで通信する場合、use_sslをtrueにする
+
     https.use_ssl = true
-    # 3.リクエストを作成する
+
     req = Net::HTTP::Get.new(url.path)
-    # 4.リクエストを投げる/レスポンスを受け取る
+
     res = https.request(req)
-    # 5.データを変換する
+
     hash = JSON.parse(res.body)
 
     pass = hash["results"][0]["login"]["password"] 
