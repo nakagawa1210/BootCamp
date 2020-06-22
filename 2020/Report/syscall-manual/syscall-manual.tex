@@ -77,36 +77,11 @@
 
 \section{システムコール追加の手順}\label{sec:tejun}
  \subsection{概要}
-システムコール追加手順の構成を以下に示す．
-\begin{enumerate}
-\item Linux カーネルの取得
-  \begin{enumerate}
-  \item linux のソースコードの取得
-  \item ブランチの作成と切り替え
-  \end{enumerate}
-\item ソースコードの編集
-  \begin{enumerate}
-  \item システムコールの作成
-  \item システムコール番号の設定
-  \item システムコールのプロトタイプ宣言
-  \end{enumerate}
-\item カーネルの再構築
-  \begin{enumerate}
-  \item .config ファイルの作成
-  \item カーネルのコンパイル
-  \item カーネルのインストール
-  \item カーネルモジュールのコンパイル
-  \item カーネルモジュールのインストール
-  \item 初期RAM ディスクの作成
-  \item ブートローダーの設定
-  \item 再起動
-  \end{enumerate}
-\end{enumerate}
-以降では上記の手順について述べる．(1)については\ref{sec:syutoku}節，(2)については\ref{sec:hensyuu}節，(3)については\ref{sec:saikoutiku}節で述べる．
+以下でシステムコール追加の手順を示す．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降では上記の手順について述べる．
 \subsection{Linux カーネルの取得}\label{sec:syutoku}
   \begin{enumerate}
   \item Linux のソースコードの取得\\    
-    Linux のソースコードを取得する．Linux のソースコードはGitで管理されている．Git とはオープンソースの分散型バージョン管理システムである．下記のGit リポジトリからクローンすることで，Linux のソースコードを取得する．リポジトリとはファイルやディレクトリの状態を記録する場所のことであり，クローンとはリポジトリの内容を指定のディレクトリに複製すことである．
+    Linux のソースコードを取得する．Linux のソースコードはGitで管理されている．Git とはオープンソースの分散型バージョン管理システムである．下記のGit リポジトリからクローンすることで，Linux のソースコードを取得する．リポジトリとはファイルやディレクトリの状態を記録する場所のことであり，クローンとはリポジトリの内容を指定のディレクトリに複製することである．
 \begin{verbatim}
  git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl
 e.git
@@ -121,7 +96,7 @@ e.git
 \end{verbatim}
 実行すると，mkdir コマンドによりgit ディレクトリが作成され，cd コマンドによりgit ディレクトリに移動する．git clone コマンドにより/home/nakagawa/git 以下にlinux-stable ディレクトリが作成される．このlinux-stable ディレクトリ以下にLinux のソースコードが格納されている．
 \item ブランチの作成と切り替え\\
-  Linux カーネルのソースコードのバージョンを切り替えるため，ブランチの作成と切り替えを行う．ブランチとは開発の履歴を管理するため分岐である．
+  Linux カーネルのソースコードのバージョンを切り替えるため，ブランチの作成と切り替えを行う．ブランチとは開発の履歴を管理するための分岐である．
   /home/nakagawa/git/linux-stable で以下のコマンドを実行する．
 \begin{verbatim}
 $ git checkout -b 4.19 v4.19
@@ -149,10 +124,11 @@ $ git checkout -b 4.19 v4.19
 \end{verbatim}
   \end{enumerate}
   
-\subsection{カーネルの再構築}\label{sec:saikoutiku}
+  \subsection{カーネルの再構築}\label{sec:saikoutiku}
+  以下の手順にしたがってカーネルの再構築を行う．コマンドは/home/nakagawa/git/linux-stable 以下で実行する．
   \begin{enumerate}
   \item .config ファイルの生成\\
-    .config ファイルを作成する．.config ファイルとはカーネルの設定を記述したコンフィギュレーションファイルである．以下のコマンドを実行し，コンフィギュレーションファイルを作成する．エラーが発生した場合，エラー内容に応じて必要なパッケージをインストールする．
+    .config ファイルを生成する．.config ファイルとはカーネルの設定を記述したコンフィギュレーションファイルである．以下のコマンドを実行し，コンフィギュレーションファイルを生成する．エラーが発生した場合，エラー内容に応じて必要なパッケージをインストールする．
 \begin{verbatim}
 $ make defconfig
 \end{verbatim}
@@ -237,7 +213,7 @@ $ sudo update-grub
 \end{verbatim}
 エントリ追加用のスクリプトの実行後，/boot/grub/grub.cfg にシステムコールを実装したカーネルのエントリが追加される
 \item 再起動\\
-  任意のディレクトリで以下のコマンドを実行し，計算機を再起動させる．
+  適当なディレクトリで以下のコマンドを実行し，計算機を再起動させる．
 \begin{verbatim}
 $ sudo reboot
 \end{verbatim}
@@ -246,12 +222,12 @@ $ sudo reboot
 
 \section{テスト}\label{sec:test}
  \subsection{概要}
- 本手順書で追加したシステムコールが実装されているか確認する．まず，追加したシステムコールを実装したテストプログラムを作成する．テストプログラムを実行して，追加したシステムコールが正しく動作しているかを確認する．
+ 本手順書で追加したシステムコールが実装されているか確認する．まず，追加したシステムコールを実装したテストプログラムを作成する．次にテストプログラムを実行して，追加したシステムコールが正しく動作しているかを確認する．
 \subsection{テストプログラムの作成}\label{sec:test_sakusei}
-システムコールを実行するテストプログラムを作成する．本手順書ではテストプログラムの名前を\verb|call_my_syscall.c| とし/home/nakagawa/git/linux-stable 以下に作成する．テストプログラムの処理の流れは以下の通りである．
+システムコールを実行するテストプログラムを作成する．本手順書ではテストプログラムの名前を\verb|call_my_syscall.c| とし，/home/nakagawa/git/linux-stable 以下に作成する．テストプログラムの処理の流れは以下の通りである．
 \begin{enumerate}
  \item 引数で文字列を受け取る
- \item \verb|call_my_syscall.c| のシステムコール番号でsyscall() を呼び出す
+ \item \verb|my_syscall| のシステムコール番号でsyscall() を呼び出す
  \item エラーがなければ受け取った文字列を表示する
 \end{enumerate}
 このプログラムに引数として文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．
@@ -261,7 +237,7 @@ $ sudo reboot
 $ gcc call_my_syscall.c
 $ ./a.out test
 \end{verbatim}
-実行後，システムコールが追加できていれば以下のような結果が得られる．
+プログラムの実行後，システムコールが追加できていれば以下のような文字列がコンソールに表示される．
 \begin{verbatim}
 $ print buf = test
 \end{verbatim}
@@ -289,11 +265,10 @@ $ [ 533.131041] <MY_SYSCALL>test
    154	
    155	        err = copy_from_user(text, buf, strlen(buf));
    156	
-   157	        printk("<MY_SYSCALL>%s", text);
-   158	        printk("");
-   159	
-   160	        return(err);
-   161	}
+   157	        printk("<MY_SYSCALL>%s\n", text);
+   158	
+   159	        return(err);
+   160	}
 \end{verbatim}
  \subsection{テストプログラムのソースコード}\label{sec:test}
 \begin{verbatim}

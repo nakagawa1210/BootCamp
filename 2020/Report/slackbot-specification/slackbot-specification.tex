@@ -42,11 +42,10 @@
 \label{sec:introduction}
 本資料は2020年度B4新人研修課題で作成したSlackBotプログラムの仕様についてまとめたものである．本プログラムで使用するSlackとはWeb上で利用できるビジネス向けのチャットツールである．SlcakBotとは，Slack上でのユーザの特定の発言を契機にSlackに発言するプログラムである．本プログラムは，以下の2つの機能をもつ．
 \begin{enumerate}
-\item 任意の文字列を発言する機能
+\item 指定の文字列を発言する機能
 \item ランダムな単語を発言する機能
 \end{enumerate}
 なお，本資料における発言とはSlackの特定のチャンネルに文字列を投稿することを指す．また，本資料においての発言内容は`` ''で囲って表す．
-
 
 \section{対象とする開発者}\label{sec:user}
 本プログラムは以下のアカウントを所有する開発者を想定している．
@@ -57,12 +56,12 @@
 \section{機能}\label{sec:function}
 本プログラムはSlackでの``@nakagawabot''から始まるユーザの発言を受信し，これに対してSlackBotが発言する．SlackBotが発言する内容は``@nakagawabot''に続く文字列により決定される．以下で本プログラムがもつ2つの機能について述べる．
 \begin{description}
-\item[機能1] 任意の文字列を発言する機能\\
-  この機能は，ユーザの``@nakagawabot 「(任意の文字列)」と言って''という発言に対して，SlackBotが(任意の文字列)と発言する．例えば，``@nakagawabot 「こんにちは」と言って''とユーザが発言した場合，Slackbotは``こんにちは''と発言する．\label{func1}
+\item[機能1] 指定の文字列を発言する機能\\
+  この機能は，ユーザの``@nakagawabot 「(指定の文字列)」と言って''という発言に対して，SlackBotが(指定の文字列)と発言する．例えば，``@nakagawabot 「こんにちは」と言って''とユーザが発言した場合，Slackbotは``こんにちは''と発言する．\label{func1}
 \item[機能2] ランダムな単語を発言する機能\\
-  ユーザが``@nakagawabot 「password」''と発言した場合，SlackBotはランダムに生成された文字列を発言する．例えば，``@nakagawabot 「password」''という発言に対し，SlackBotは"knockers"のように発言する．
+  この機能は，ユーザの``@nakagawabot 「password」''という発言に対して，SlackBotはランダムに生成された文字列を発言する．例えば，``@nakagawabot 「password」''とユーザが発言した場合，SlackBotは"knockers"のように発言する．
 \end{description}
-なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザー名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
+なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザ名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
 
 \section{動作環境}\label{sec:env}
 Herokuの環境を表\ref{tab:1}に示す．なお，本プログラムが表\ref{tab:1}の環境で動作することは確認済みである．
@@ -98,7 +97,7 @@ Herokuの環境を表\ref{tab:1}に示す．なお，本プログラムが表\re
 \item APIのアドレス取得
 \item Herokuの設定
 \end{enumerate}
-Incoming WebHookとは，外部サービスからSlackに発言する機能である．Outgoing WebHookとは，特定の発言を受信した際，指定したURLに発言内容やユーザネームを含むデータをPOSTする機能である．本プログラムでは，この2つのWebHook機能を利用するため設定を行う必要がある．WebHook機能とAPIを利用したSlackBotの処理の流れを以下で説明する．
+Incoming WebHookとは，外部サービスからSlackに発言する機能である．Outgoing WebHookとは，特定の発言を受信した際，指定したURLに発言内容やユーザネームを含むデータをPOSTする機能である．本プログラムでは，この2つのWebHook機能を利用するため設定を行う必要がある．WebHook機能とAPIを利用したSlackBotの処理の流れを図\ref{slackbot}に示し，以下で説明する．
 
 \begin{enumerate}
 \item クライアントがSlackに発言する．
@@ -141,14 +140,14 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 
 
 \subsubsection{ランダムなユーザー情報を生成するAPIの動作の確認}\label{sec:api}
-Random User Generatorという名前のAPIのサイトがある．このAPI を利用してランダムなスーザー情報を生成し，その情報を受け取る．このプログラムでは生成された情報の中のpassword の項目を利用している．
+Random User GeneratorというAPIがある．このAPI を利用してランダムなユーザ情報を生成し，その情報を受け取る．このプログラムでは生成された情報の中のpassword の項目を利用している．
 
 \begin{enumerate}
-\item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムなユーザー情報を受け取ることができる．
+\item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムに生成されたユーザの情報を受け取ることができる．
 \begin{verbatim}
 https://randomuser.me/api/
 \end{verbatim}
-\item 以下に示すURLのページをWebブラウザで開くとその際にランダムに生成されたユーザーの情報が表示される．
+\item 使用したAPIのサイトのURLを以下に示す．このページをWebブラウザで開くとその際にランダムに生成されたユーザの情報を確認することができる．
 \begin{verbatim}
 https://randomuser.me
 \end{verbatim}
@@ -200,7 +199,7 @@ $ git push heroku master
 
 \section{エラー処理と保証しない動作}
 \subsection{エラー処理}
-本プログラムでは特にエラー処理は行っていない．そのため(機能2)で使用しているサイトが閉鎖していたり，障害でアクセスできなかったりするとプログラムが正常に動作せず，発言が返ってこない．
+本プログラムでは特にエラー処理は行っていない．このため(機能2)で使用しているサイトが閉鎖していたり，障害でアクセスできなかったりするとプログラムが正常に動作せず，発言が返ってこない．
 
 \subsection{保証しない動作}
 本プログラムが保証しない動作を以下に示す．
