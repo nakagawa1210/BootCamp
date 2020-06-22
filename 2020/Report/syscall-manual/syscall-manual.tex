@@ -44,7 +44,7 @@
 本手順書では，Linux カーネルへシステムコールを追加する方法を記す．カーネルへシステムコールを追加するには，Linux のソースコードを取得してシステムコールのソースコードを追加した後，カーネルの再構築を行う．また，本手順書で想定する読者はコンソールの基本的な操作を習得しているものとする．
 
 \section{実装環境}\label{sec:env}
-システムコールを追加した環境を表\ref{tab:1}に示す．導入済みパッケージのうちgit はlinux の取得に，gcc， make， bc はカーネルの再構築に用いる．
+システムコールを追加した環境を表\ref{tab:1}に示す．導入済みパッケージはgit， gcc， make， bc があり，git はLinux のソースコードの取得に，gcc， make， bc はカーネルの再構築に用いる．
 \begin{table}[h]
   \begin{center}
     \caption{実装環境}\label{tab:1}
@@ -53,7 +53,7 @@
       \hline\hline
       \multicolumn{1}{l|}{項目} & \multicolumn{1}{l}{環境}\\
       \hline
-      OS & Debian GNU/Linux 10 (buster) \\
+      OS & Debian GNU/Linux 10.3 (buster)\\
       カーネル & Linux 4.19.0+\\
       CPU & Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz\\
       メモリ & 16GB\\
@@ -77,14 +77,14 @@
 
 \section{システムコール追加の手順}\label{sec:tejun}
  \subsection{概要}
-システムコール追加の手順を以下に示す．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降では上記の手順について述べる．
+システムコール追加の手順について述べる．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降ではここで述べた手順について示す．
 \subsection{Linux カーネルの取得}\label{sec:syutoku}
+以下にLinux カーネルの取得手順について示す．
   \begin{enumerate}
   \item Linux のソースコードの取得\\    
     Linux のソースコードを取得する．Linux のソースコードはGitで管理されている．Git とはオープンソースの分散型バージョン管理システムである．下記のGit リポジトリからクローンすることで，Linux のソースコードを取得する．リポジトリとはファイルやディレクトリの状態を記録する場所のことであり，クローンとはリポジトリの内容を指定のディレクトリに複製することである．
 \begin{verbatim}
- git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl
-e.git
+ git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 \end{verbatim}
 本手順書では，/home/nakagawa/git 以下のディレクトリでソースコードを管理する．
 /home/nakagawa で以下のコマンドを実行する．
@@ -94,7 +94,7 @@ e.git
  $ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st
    able.git
 \end{verbatim}
-実行すると，mkdir コマンドによりgit ディレクトリが作成され，cd コマンドによりgit ディレクトリに移動する．git clone コマンドにより/home/nakagawa/git 以下にlinux-stable ディレクトリが作成される．このlinux-stable ディレクトリ以下にLinux のソースコードが格納されている．
+実行後，mkdir コマンドによりgit ディレクトリが作成され，cd コマンドによりgit ディレクトリに移動する．そして，git clone コマンドにより/home/nakagawa/git 以下にlinux-stable ディレクトリが作成される．このlinux-stable ディレクトリ以下にLinux のソースコードが格納されている．
 \item ブランチの作成と切り替え\\
   Linux カーネルのソースコードのバージョンを切り替えるため，ブランチの作成と切り替えを行う．ブランチとは開発の履歴を管理するための分岐である．
   /home/nakagawa/git/linux-stable で以下のコマンドを実行する．
@@ -105,10 +105,10 @@ $ git checkout -b 4.19 v4.19
   \end{enumerate}
   
 \subsection{ソースコードの編集}\label{sec:hensyuu}
-ソースコードの左端に書かれている数字は行数を表し，追加した行には + をつけている．
+以下にソースコードの編集手順について示す．ソースコードの左端に書かれている数字は行数を表し，追加した行には + をつけて表す．
   \begin{enumerate}
   \item システムコールの作成\\    
-    /home/nakagawa/git/linux-stable/kernel/sys.c に\ref{sec:gaiyou}章で示したシステムコールを追加する．ソースコードは\ref{sec:syscall} 節に添付してある．
+    /home/nakagawa/git/linux-stable/kernel/sys.c を編集して，\ref{sec:gaiyou}章で示したシステムコールを追加する．ソースコードは\ref{sec:syscall} 節に添付してある．
   \item システムコール番号の設定\\
     /home/nakagawa/git/linux-stable/arch/x86/entry/syscalls/syscall\_64.tbl を編集して，追加するシステムコール番号を定義する．追加する際には既存のシステムコール番号と重複しないようにする．今回は作成したシステムコールのシステムコール番号を400とした．このシステムコール番号は，システムコールを呼び出す際に必要になる．編集例を以下に示す．
     
@@ -120,15 +120,18 @@ $ git checkout -b 4.19 v4.19
 \item システムコールのプロトタイプ宣言\\  
   /home/nakagawa/git/linux-stable/include/linux/syscalls.h を編集して，追加するシステムコールのプロトタイプ宣言を記述する．編集例を以下に示す．
 \begin{verbatim}
+    1293            return old;
+    1294} 
+    1295
 +   1296    asmlinkage long sys_my_syscall(char __user *buf, int count);
 \end{verbatim}
   \end{enumerate}
   
   \subsection{カーネルの再構築}\label{sec:saikoutiku}
-  以下の手順にしたがってカーネルの再構築を行う．以下のコマンドは/home/nakagawa/git/linux-stable で実行する．
+  以下の手順にしたがってカーネルの再構築を行う．特に記述のない\ref{sec:saikoutiku}節のコマンドは/home/nakagawa/git/linux-stable で実行する．
   \begin{enumerate}
   \item .config ファイルの生成\\
-    .config ファイルを生成する．.config ファイルとはカーネルの設定を記述したコンフィギュレーションファイルである．以下のコマンドを実行し，コンフィギュレーションファイルを生成する．エラーが発生した場合，エラー内容に応じて必要なパッケージをインストールする．
+    以下のコマンドを実行し，.config ファイルを生成する．.config ファイルとはカーネルの設定を記述したコンフィギュレーションファイルである．
 \begin{verbatim}
 $ make defconfig
 \end{verbatim}
@@ -137,7 +140,7 @@ $ make defconfig
 \begin{verbatim}
 $ sudo make bzImage -j8
 \end{verbatim}
-上記コマンドの「-j」オプションは，同時に実行できるジョブ数を指定の個数に指定する．ジョブ数が多すぎるとメモリ不足により実行速度が低下する場合があるため，適切なジョブ数を指定する必要がある．ジョブ数はCPUのコア数の2倍の数が効果的であるため，ジョブ数は4コアの2倍の8とした．コマンド実行後，/home/nakagawa/git/linux-stable/arch/x86/boot 以下にbzImage という名前の圧縮カーネルイメージが作成される．カーネルイメージとは実行可能形式のカーネルを含むファイルである．同時に，/home/nakagawa/git/linux-stable 以下に全てのカーネルシンボルのアドレスを記述したSystem.map が作成される．カーネルシンボルとはカーネルのプログラムが格納されたメモリアドレスと対応付けられた文字列のことである．
+上記コマンドの「-j」オプションは，同時に実行できるジョブ数を指定する．ジョブ数が多すぎるとメモリ不足により実行速度が低下する場合があるため，適切なジョブ数を指定する必要がある．ジョブ数はCPUのコア数の2倍の数が効果的である．今回は，4コアのCPUを使用しているため，ジョブ数は4コアの2倍の8とした．実行後，/home/nakagawa/git/linux-stable/arch/x86/boot 以下にbzImage という名前の圧縮カーネルイメージが作成される．カーネルイメージとは実行可能形式のカーネルを含むファイルである．同時に，/home/nakagawa/git/linux-stable 以下に全てのカーネルシンボルのアドレスを記述したSystem.map が作成される．カーネルシンボルとはカーネルのプログラムが格納されたメモリアドレスと対応付けられた文字列のことである．
 \item カーネルのインストール\\
   コンパイルしたカーネルをインストールする．/home/nakagawa/git/linux-stable で以下のコマンドを実行する．
 \begin{verbatim}
@@ -207,7 +210,7 @@ DEPMOD 4.19.0
 $ sudo chmod +x 11_linux-4.19.0
 \end{verbatim}
 \item エントリ追加用のスクリプトの実行\\
-  以下のコマンドを実行し，作成したスクリプトを実行する．
+  /etc/grub.d で以下のコマンドを実行し，作成したスクリプトを実行する．
 \begin{verbatim}
 $ sudo update-grub
 \end{verbatim}
@@ -230,7 +233,7 @@ $ sudo reboot
  \item \verb|my_syscall| のシステムコール番号でsyscall() を呼び出す
  \item エラーがなければ受け取った文字列を表示する
 \end{enumerate}
-このプログラムに引数として文字列を入力して実行すると，追加したシステムコールを使用して，指定した文字列がカーネルのメッセージバッファに出力され，問題がなければ入力した文字列が表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．
+このプログラムに引数として文字列を入力して実行すると，追加したシステムコールが呼び出される．問題がなければ引数として入力した文字列が，カーネルのメッセージバッファとコンソールに表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．
 \subsection{テストプログラムの実行}
 \ref{sec:test_sakusei} 節で作成したプログラムをコンパイルし実行する．以下のコマンドを実行する．
 \begin{verbatim}
@@ -239,7 +242,7 @@ $ ./a.out test
 \end{verbatim}
 プログラムの実行後，システムコールが追加できていれば以下のような文字列がコンソールに表示される．
 \begin{verbatim}
-$ print buf = test
+print buf = test
 \end{verbatim}
 \subsection{システムコールの実行結果の確認}
 カーネルのメッセージバッファを確認する．以下のコマンドを実行する．
@@ -248,7 +251,7 @@ $ sudo dmesg | tail
 \end{verbatim}
 実行後，システムコールが追加できていれば以下のような結果が得られる．なお，角括弧内の数字はカーネル起動開始からの経過時間を表す．
 \begin{verbatim}
-$ [ 533.131041] <MY_SYSCALL>test
+[ 533.131041] <MY_SYSCALL>test
 \end{verbatim}
 
 \section{作成したプログラムのソースコード}
@@ -270,7 +273,8 @@ $ [ 533.131041] <MY_SYSCALL>test
    159	        return(err);
    160	}
 \end{verbatim}
- \subsection{テストプログラムのソースコード}\label{sec:test}
+\subsection{テストプログラムのソースコード}\label{sec:test}
+\verb|call_my_syscall.c| のソースコードを以下に示す．
 \begin{verbatim}
      1	#include <stdio.h>
      2	#include <unistd.h>
