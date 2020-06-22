@@ -77,7 +77,7 @@
 
 \section{システムコール追加の手順}\label{sec:tejun}
  \subsection{概要}
-以下でシステムコール追加の手順を示す．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降では上記の手順について述べる．
+システムコール追加の手順を以下に示す．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降では上記の手順について述べる．
 \subsection{Linux カーネルの取得}\label{sec:syutoku}
   \begin{enumerate}
   \item Linux のソースコードの取得\\    
@@ -125,7 +125,7 @@ $ git checkout -b 4.19 v4.19
   \end{enumerate}
   
   \subsection{カーネルの再構築}\label{sec:saikoutiku}
-  以下の手順にしたがってカーネルの再構築を行う．コマンドは/home/nakagawa/git/linux-stable 以下で実行する．
+  以下の手順にしたがってカーネルの再構築を行う．以下のコマンドは/home/nakagawa/git/linux-stable で実行する．
   \begin{enumerate}
   \item .config ファイルの生成\\
     .config ファイルを生成する．.config ファイルとはカーネルの設定を記述したコンフィギュレーションファイルである．以下のコマンドを実行し，コンフィギュレーションファイルを生成する．エラーが発生した場合，エラー内容に応じて必要なパッケージをインストールする．
