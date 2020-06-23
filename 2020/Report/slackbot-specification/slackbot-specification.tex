@@ -58,10 +58,10 @@
 \begin{description}
 \item[機能1] 指定の文字列を発言する機能\\
   この機能は，ユーザの``@nakagawabot 「(指定の文字列)」と言って''という発言に対して，SlackBotが(指定の文字列)と発言する．例えば，``@nakagawabot 「こんにちは」と言って''とユーザが発言した場合，Slackbotは``こんにちは''と発言する．\label{func1}
-\item[機能2] ランダムな単語を発言する機能\\
-  この機能は，ユーザの``@nakagawabot 「password」''という発言に対して，SlackBotはランダムに生成された文字列を発言する．例えば，``@nakagawabot 「password」''とユーザが発言した場合，SlackBotは"knockers"のように発言する．
+\item[機能2] パスワードの候補となる文字列を発言する機能\\
+  この機能は，ユーザの``@nakagawabot 「password」''という発言に対して，SlackBotはパスワードの候補となる文字列を発言する．例えば，``@nakagawabot 「password」''とユーザが発言した場合，SlackBotは``knockers''のように発言する．この発言内容はよく利用されているパスワード上位1万のリストの中からランダムに選択されている．
 \end{description}
-なお，上記の(機能1)，(機能2)のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザ名) Hi!"のように発言する．また，(機能1，2)について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
+なお，上記の機能1，機能2のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザ名) Hi!"のように発言する．また，機能1，機能2について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
 
 \section{動作環境}\label{sec:env}
 Herokuの環境を表\ref{tab:1}に示す．なお，本プログラムが表\ref{tab:1}の環境で動作することは確認済みである．
@@ -112,10 +112,11 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 \insertfigure[1.0]{slackbot}{slackbot}{WebHookとAPIを利用したSlackBotの処理の流れ}{slackbot}
 
 \subsection{手順}
+以下のSlackに関する設定はワークスペースが「nomlab」の場合である．
 \subsubsection{SlackのIncoming WebHookの設定}\label{sec:IW}
 \begin{enumerate}
 \item 自分のSlackアカウントにログイン
-\item Slack画面左上の「namlab」-\textgreater「その他管理項目」-\textgreater「以下をカスタマイズ：nomlab」をクリック．左上の「Menu」から「App管理」-\textgreater「カスタムインテグレーション」をクリックする．
+\item Slack画面左上の「nomlab」-\textgreater「その他管理項目」-\textgreater「以下をカスタマイズ：nomlab」をクリック．左上の「Menu」から「App管理」-\textgreater「カスタムインテグレーション」をクリックする．
 \item 「Incoming WebHook」をクリックする．
 \item 「Slackに追加」から，新たなIncoming WebHookを追加する．
 \item 「チャンネルへの投稿」で送信するチャンネルを選択する，
@@ -126,7 +127,7 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 \subsubsection{SlackのOutgoing WebHookの設定}
 \begin{enumerate}
 \item 自分のSlackアカウントにログイン
-\item Slack画面左上の「namlab」-\textgreater「その他管理項目」-\textgreater「以下をカスタマイズ：nomlab」をクリック．左上の「Menu」から「App管理」-\textgreater「カスタムインテグレーション」をクリックする．
+\item Slack画面左上の「nomlab」-\textgreater「その他管理項目」-\textgreater「以下をカスタマイズ：nomlab」をクリック．左上の「Menu」から「App管理」-\textgreater「カスタムインテグレーション」をクリックする．
 \item 「Outgoing WebHook」をクリックする．
 \item 「Slackに追加」をクリックし，「Outgoing Webhook インテグレーションの追加」をクリックする．
 \item Outgoing WebHookに関して以下を設定する．
@@ -143,18 +144,18 @@ Incoming WebHookとは，外部サービスからSlackに発言する機能で�
 Random User GeneratorというAPIがある．このAPI を利用してランダムなユーザの情報を生成し，その情報を受け取る．このプログラムでは生成された情報の中のpassword の項目を利用している．
 
 \begin{enumerate}
-\item 以下にURLを示す．このURLに対し，リクエストを送信することでランダムに生成されたユーザの情報を受け取ることができる．
+\item 以下にAPIのURLを示す．このURLに対し，リクエストを送信することでランダムに生成されたユーザの情報を受け取ることができる．
 \begin{verbatim}
 https://randomuser.me/api/
 \end{verbatim}
-\item 使用したAPIのサイトのURLを以下に示す．このページをWebブラウザで開くとその際にランダムに生成されたユーザの情報を確認することができる．
+\item 使用したAPIのサイトのURLを以下に示す\cite{API}．このページをWebブラウザで開くとその際にランダムに生成されたユーザの情報を確認することができる．
 \begin{verbatim}
 https://randomuser.me
 \end{verbatim}
 \end{enumerate}
 
 \subsubsection{Herokuの設定}\label{sec5-2-4}
-Heroku はアプリの構築、提供、監視、スケールに役立つクラウドプラットフォームである．
+Heroku はアプリの構築，提供，監視，及びスケールに役立つクラウドプラットフォームである．
 \begin{enumerate}
 \item 以下のURLよりHerokuにアクセスし，「Sign up」から新しいアカウントを登録する．
   https://www.heroku.com/
@@ -168,18 +169,18 @@ $ heroku version
 \begin{verbatim}
 $ heroku login
 \end{verbatim}
-\item 作成したアプリケーションのディレクトリに移動して以下のコマンドを実行し，Heroku上にアプリケーションを生成する．
+\item 以下のコマンドを実行し，Heroku上にアプリケーションを生成する．
 \begin{verbatim}
 $ heroku create <app_name>
 \end{verbatim}
-ただし，\verb|<app_name>|は任意のアプリケーション名を示す．アプリケーション名には英語のアルファベットの小文字，数字，およびハイフンのみ使用できる．
+\verb|<app_name>|はアプリケーション名を示す．アプリケーション名には英語のアルファベットの小文字，数字，およびハイフンのみ使用できる．
 \item 以下のコマンドで生成したアプリケーションがHerokuに登録されていることを確認できる．
 \begin{verbatim}
 $ git remote -v
 heroku https://git.heroku.com/<app_name>.git (fetch)
 heroku https://git.heroku.com/<app_name>.git (push)
 \end{verbatim}
-\item 以下のコマンドを実行し，Herokuの環境変数に\ref{sec:IW}項(\ref{url})で取得したWebhook URLを設定する．\label{item8}
+\item Herokuの環境変数にWebhook URLを設定する．以下のコマンドの"https://*****"を\ref{sec:IW}項(\ref{url})で取得したWebhook URLに置き換え実行する．\label{item8}
 \begin{verbatim}
 $ heroku config:set INCOMING_WEBHOOK_URL="https://*****"
 \end{verbatim}
@@ -208,6 +209,7 @@ $ git push heroku master
 \end{enumerate}
 
 \bibliographystyle{ipsjunsrt}
-%\bibliography{mybibdata}
+\bibliography{mybibdata}
 
 \end{document}
+

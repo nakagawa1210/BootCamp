@@ -49,13 +49,20 @@
   Slackでユーザが``「◯◯」と言って''の文字列を含む発言した場合に，SlackBotが``◯◯''と発言するプログラムを作成する．\label{item1}
 \item SlackBotプログラムへの機能追加\\
   Slack以外のWebサービスのAPIやWebhookを利用した機能を追加する．\label{item2}
-  
 \end{enumerate}
 本課題で使用するRubyのバージョンは2.6.6である．また，作成したSlackBotプログラムのコードの行数は83行になった．
+
 \section{SlackBotプログラムへ追加した機能}\label{func}
-今回SlackBotプログラムへ追加した機能はSlackでユーザが``「password」''と発言した場合にSlackBotがランダムな単語を発言する機能である．追加した機能のプログラムが保存されているGitHubのURLを以下に示す．
+追加した2つの機能について以下に述べる．
+\begin{enumerate}
+\item 指定の文字列を発言する機能\\
+  この機能は，Slackでユーザが``「(指定の文字列)」と言って''と発言した場合，SlackBotが``(指定の文字列)''と発言する．
+\item パスワードの候補となる文字列を発言する機能\\
+  この機能は，Slackでユーザが``「password」''と発言した場合，SlackBotがパスワードの候補となる文字列を発言する．
+\end{enumerate}
+追加した機能のプログラムが保存されているGitリポジトリのURLを以下に示す．
 \begin{verbatim}
-https://github.com/nakagawa1210/BootCamp/blob/master/2020/Slackbot/SlackBot.rb
+git@github.com:nakagawa1210/BootCamp.git
 \end{verbatim}
 
 \section{理解できなかった部分}\label{sec3}
@@ -66,24 +73,16 @@ https://github.com/nakagawa1210/BootCamp/blob/master/2020/Slackbot/SlackBot.rb
     36	  def password
     37	    url = URI.parse("https://randomuser.me/api/")
     38	    https = Net::HTTP.new(url.host, url.port)
-    39	
-    40	    https.use_ssl = true
-    41	
-    42	    req = Net::HTTP::Get.new(url.path)
-    43	
-    44	    res = https.request(req)
-    45	
-    46	    hash = JSON.parse(res.body)
-    47	
-    48	    pass = hash["results"][0]["login"]["password"] 
-    49	
-    50	    return pass
-    51	  end
-    52	  
-    53	end
+    39	    https.use_ssl = true
+    40	    req = Net::HTTP::Get.new(url.path)
+    41	    res = https.request(req)
+    42	    hash = JSON.parse(res.body)
+    43	    pass = hash["results"][0]["login"]["password"] 
+    44	    return pass
+    45	  end
 \end{verbatim}
 \verb|password| メソッドは呼び出された際にWebサービスのAPIへリクエストを作成し送信する．その後返信された情報の内\verb|password| のデータを戻り値として返している．
-上記コードの37行目から46行目は，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換している．しかし，具体的に各関数でどのような処理が行われているかは理解できていない．
+上記コードの37行目から42行目は，指定の\verb|URL|に対してリクエストを送信して，その返信を受け取り，受け取ったデータを変換している．しかし，具体的に各関数でどのような処理が行われているかは理解できていない．
 \end{enumerate}
    
 \section{自主的に作成した機能}\label{sec4}
@@ -91,8 +90,8 @@ https://github.com/nakagawa1210/BootCamp/blob/master/2020/Slackbot/SlackBot.rb
 
 \section{作成できなかった機能}\label{sec5}
 \begin{enumerate}
-\item 各種機能の実装\\
-  \ref{func}章で実装した機能はパスワードしか返さないようになっている．しかし，WebサービスのAPIの機能としては他にも名前や生年月日等の情報を作成している．このためユーザの発言内容によって発言する情報を変える機能を実装したかった．
+\item ユーザの発言内容によって発言する情報を変える機能の実装\\
+  \ref{func}章で実装した機能はパスワードしか返さないようになっている．しかし，今回使用したRandom User GeneratorというAPIの機能としては他にも名前や生年月日等の情報を作成している．このためユーザの発言内容によって発言する情報を変える機能を実装したかった．
 \end{enumerate}
 \bibliographystyle{ipsjunsrt}
 \bibliography{mybibdata}

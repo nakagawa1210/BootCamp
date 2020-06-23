@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  22 JUN 2020 14:47
+This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  23 JUN 2020 16:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -142,23 +142,23 @@ LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
  [2]
 File: ./figs/slackbot.pdf Graphic file (type pdf)
 <./figs/slackbot.pdf>
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 118.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 119.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 118.
- [3] [4] [5] [6]
-(./slackbot-specification.aux) ) 
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 119.
+ [3] [4] [5]
+(./slackbot-specification.bbl) [6] (./slackbot-specification.aux) ) 
 Here is how much of TeX's memory you used:
- 980 strings out of 494319
- 11738 string characters out of 6171546
+ 985 strings out of 494319
+ 11813 string characters out of 6171546
  77247 words of memory out of 5000000
- 4903 multiletter control sequences out of 15000+600000
+ 4905 multiletter control sequences out of 15000+600000
  12804 words of font info for 60 fonts, out of 8000000 for 9000
  269 hyphenation exceptions out of 8191
  25i,9n,28p,382b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on slackbot-specification.dvi (6 pages, 14624 bytes).
+Output written on slackbot-specification.dvi (6 pages, 15040 bytes).
