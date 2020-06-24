@@ -227,7 +227,7 @@ $ sudo reboot
 システムコールを実行するテストプログラムを作成する．本手順書ではテストプログラムの名前を\verb|call_my_syscall.c| とし，/home/nakagawa/git/linux-stable 以下に作成する．テストプログラムの処理の流れは以下の通りである．
 \begin{enumerate}
  \item 引数から文字列を受け取る
- \item \verb|my_syscall| のシステムコール番号を引数としてsyscall() を呼び出す
+ \item \verb|my_syscall| のシステムコール番号を引数として\verb|syscall()| を呼び出す
  \item エラーがなければ受け取った文字列を表示する，エラーが発生した場合\verb|err:1| のように表示される
 \end{enumerate}
 このプログラムに引数として文字列を入力して実行すると，追加したシステムコールが呼び出される．問題がなければ引数として入力した文字列が，カーネルのメッセージバッファとコンソールに表示される．作成したテストプログラムのソースコードを\ref{sec:test} 節に添付してある．

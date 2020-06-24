@@ -61,7 +61,7 @@
 \item[機能2] パスワードの候補となる文字列を発言する機能\\
   この機能は，ユーザの``@nakagawabot 「password」''という発言に対して，SlackBotはパスワードの候補となる文字列を発言する．例えば，``@nakagawabot 「password」''とユーザが発言した場合，SlackBotは``knockers''のように発言する．この発言内容はよく利用されているパスワード上位1万のリストの中からランダムに選択されている．
 \end{description}
-なお，上記の機能1，機能2のどちらにも当てはまらない発言をした場合，SlackBotは"@(ユーザ名) Hi!"のように発言する．また，機能1，機能2について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
+なお，上記の機能1，機能2のどちらにも当てはまらない発言をした場合，SlackBotは``@(ユーザ名) Hi!''のように発言する．また，機能1，機能2について，``@nakagawabot 「password」と言って''と発言した場合，``password''と発言する．
 
 \section{動作環境}\label{sec:env}
 Herokuの環境を表\ref{tab:1}に示す．なお，本プログラムが表\ref{tab:1}の環境で動作することは確認済みである．
@@ -180,7 +180,7 @@ $ git remote -v
 heroku https://git.heroku.com/<app_name>.git (fetch)
 heroku https://git.heroku.com/<app_name>.git (push)
 \end{verbatim}
-\item Herokuの環境変数にWebhook URLを設定する．以下のコマンドの"https://*****"を\ref{sec:IW}項(\ref{url})で取得したWebhook URLに置き換え実行する．\label{item8}
+\item Herokuの環境変数にWebhook URLを設定する．以下のコマンドの「\verb|https://*****| 」を\ref{sec:IW}項(\ref{url})で取得したWebhook URLに置き換え実行する．\label{item8}
 \begin{verbatim}
 $ heroku config:set INCOMING_WEBHOOK_URL="https://*****"
 \end{verbatim}
