@@ -110,13 +110,6 @@
   refdate	   = "2016-01-04"
 }
 
-@webpage{API,
-  author	   = "{Arron J. Hunt,Keith Armstrong}",
-  title		   = "Random User Generator",
-  organization     = "Random User Generator",
-  url		   = "https://randomuser.me/",
-  refdate	   = "2020-06-23"
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 情報処理学会論文誌
 

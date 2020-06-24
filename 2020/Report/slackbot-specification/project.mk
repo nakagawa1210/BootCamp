@@ -11,7 +11,7 @@ PROJECT = slackbot-specification
 #   PROJECT_BIB = mybibfile.bib
 # otherwise, leave it blank.
 #
-%PROJECT_BIB = mybibdata.bib
+PROJECT_BIB = mybibdata.bib
 
 # Set all pdf figure files in the project like:
 #

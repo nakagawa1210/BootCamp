@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  23 JUN 2020 16:54
+This is e-pTeX, Version 3.14159265-p3.8.1-180901-2.6 (utf8.euc) (TeX Live 2019/dev/Debian) (preloaded format=platex 2020.4.6)  24 JUN 2020 10:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -153,12 +153,12 @@ LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
  [3] [4] [5]
 (./slackbot-specification.bbl) [6] (./slackbot-specification.aux) ) 
 Here is how much of TeX's memory you used:
- 985 strings out of 494319
- 11813 string characters out of 6171546
+ 984 strings out of 494319
+ 11801 string characters out of 6171546
  77247 words of memory out of 5000000
- 4905 multiletter control sequences out of 15000+600000
+ 4904 multiletter control sequences out of 15000+600000
  12804 words of font info for 60 fonts, out of 8000000 for 9000
  269 hyphenation exceptions out of 8191
  25i,9n,28p,382b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on slackbot-specification.dvi (6 pages, 15040 bytes).
+Output written on slackbot-specification.dvi (6 pages, 15180 bytes).
