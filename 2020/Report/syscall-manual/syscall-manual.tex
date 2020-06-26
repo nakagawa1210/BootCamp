@@ -77,7 +77,7 @@
 
 \section{システムコール追加の手順}\label{sec:tejun}
  \subsection{概要}
-システムコール追加の手順について述べる．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降ではここで述べた手順について示す．
+システムコール追加の手順について述べる．まず，Linux カーネルを取得する．次にソースコードの編集を行う．最後にカーネルの再構築を行う．以降ではここで述べた手順について示す．(参考サイト\cite{syscall})
 \subsection{Linux カーネルの取得}\label{sec:syutoku}
 以下にLinux カーネルの取得手順について示す．
   \begin{enumerate}
@@ -256,17 +256,17 @@ $ dmesg | tail
  /home/nakagawa/git/linux-stable/kernel/sys.c に追加したソースコードを抜粋して以下に示す．
 \begin{verbatim}
    147	SYSCALL_DEFINE2(my_syscall, char __user *, buf, int, count){
-   148		int err;
-   149		char text[128]= {0};
+   148	        int err;
+   149	        char text[128]= {0};
    150	
-   151		err = (int)copy_from_user(text, buf, count);
+   151	        err = (int)copy_from_user(text, buf, count);
    152	
-   153		if(err == 0){
-   154		printk("<MY_SYSCALL>:%s\n", text);
-   155		}else{
-   156		printk("err:%d\n",err);
-   157		}
-   158		return(err);
+   153	        if(err == 0){
+   154	        printk("<MY_SYSCALL>:%s\n", text);
+   155	        }else{
+   156	        printk("err:%d\n",err);
+   157	        }
+   158	        return(err);
    159	}
 \end{verbatim}
 \subsection{テストプログラムのソースコード}\label{sec:test}
@@ -280,32 +280,31 @@ $ dmesg | tail
      6	
      7	int main(int argc, char *argv[]){
      8	
-     9		char buf[128] ="default_message";
-    10		int ret;
+     9	        char buf[128] ="default_message";
+    10	        int ret;
     11	
-    12		if(argc != 1){
-    13			if(128 < strlen(argv[1])){
-    14			printf("err_over:%d\n",strlen(argv[1])-128);
-    15			return 0;
-    16			}
-    17		strncpy(buf, argv[1], strlen(argv[1]));
-    18		buf[strlen(argv[1])] = '\0';
-    19		}
+    12	        if(argc != 1){
+    13	                if(128 < strlen(argv[1])){
+    14	                printf("err_over:%d\n",strlen(argv[1])-128);
+    15	                return 0;
+    16	                }
+    17	        strncpy(buf, argv[1], strlen(argv[1]));
+    18                  buf[strlen(argv[1])] = '\0';
+    19	        }
     20	
-    21		ret = syscall(SYS_my_syscall, buf, strlen(buf));
+    21	        ret = syscall(SYS_my_syscall, buf, strlen(buf));
     22	
-    23		if(ret == 0){
-    24			printf("print buf = %s\n",buf);
-    25		}else{
-    26			fprintf(stderr, "err:%d\n", ret);
-    27		}
+    23          if(ret == 0){
+    24	                printf("print buf = %s\n",buf);
+    25	        }else{
+    26                  fprintf(stderr, "err:%d\n", ret);
+    27	        }
     28	
-    29		return (0);
+    29          return (0);
     30	}
 \end{verbatim}
 \bibliographystyle{ipsjunsrt}
-%\bibliography{mybibdata}
-
+\bibliography{mybibdata}
 \end{document}
 
 
